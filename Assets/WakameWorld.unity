@@ -4221,22 +4221,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1794574663 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 161904, guid: 9cb1e183d39ba432db5c583c4548819c, type: 2}
-  m_PrefabInternal: {fileID: 1350087634}
---- !u!114 &1794574668
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1794574663}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 229740497, guid: 4ecd63eff847044b68db9453ce219299, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  contentType: 1
 --- !u!1 &1822768693
 GameObject:
   m_ObjectHideFlags: 0
@@ -4269,7 +4253,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 5cb207cac66c8a8458bbbfd922d607f9, type: 2}
+  - {fileID: 2100000, guid: 32a0e3cb06ec67147b91916d3a40776a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
