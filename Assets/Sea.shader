@@ -85,10 +85,10 @@
 			float fBm_xzt = .5*fBm(float3(IN.worldPos.xz, _Time.y)) + .5;
 			o.Albedo *= (float3)fBm_xzt;
 			float2 dheight = float2(
-				fBm(float3(IN.worldPos.xz + float2(.001, 0), _Time.y)) - fBm_xzt,
-				fBm(float3(IN.worldPos.xz + float2(0, .001), _Time.y)) - fBm_xzt
+				.5*fBm(float3(IN.worldPos.xz + float2(.001, 0), _Time.y)) + .5 - fBm_xzt,
+				.5*fBm(float3(IN.worldPos.xz + float2(0, .001), _Time.y)) + .5 - fBm_xzt
 			);
-			o.Normal = normalize(float3(dheight.x, 1, dheight.y));
+			o.Normal = normalize(float3(-dheight.x, .001, -dheight.y));
 			// Metallic and smoothness come from slider variables
 			o.Metallic = _Metallic;
 			o.Smoothness = _Glossiness;
