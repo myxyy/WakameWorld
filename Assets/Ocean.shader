@@ -1,10 +1,8 @@
 ﻿Shader "WakameIsland/Ocean" {
 	Properties {
 		_Color ("Color", Color) = (1,1,1,1)
-		_MainTex ("Albedo (RGB)", 2D) = "white" {}
-		_Glossiness ("Smoothness", Range(0,1)) = 0.5
-		_Metallic ("Metallic", Range(0,1)) = 0.0
 		_SpecPower ("Specular", Float) = 10.0
+		_Opacity ("Opacity", Range(1,2)) = 1.1
 	}
 	SubShader {
 		Tags { "RenderType"="Transparent" "Queue"="Transparent"}
@@ -22,8 +20,8 @@
 
 			#include "UnityCG.cginc"
 
-			sampler2D _MainTex;
 			sampler2D _GrabTex;
+			sampler2D _CameraDepthTexture;
 			float4 _GrabTex_ST;
 
 			struct appdata {
@@ -34,6 +32,7 @@
 				float4 pos : SV_POSITION;
 				float3 wPos : WORLD_POS;
 				float4 grabPos : TEXCOORD0;
+				float4 scrPos : TEXCOORD1;
 			};
 
 			float random3(float3 p) {
@@ -80,9 +79,8 @@
 				return f;
 			}
 
-			half _Glossiness;
-			half _Metallic;
 			float _SpecPower;
+			float _Opacity;
 			fixed4 _Color;
 
 			v2f vert(appdata v) {
@@ -90,16 +88,17 @@
 				o.pos = UnityObjectToClipPos(v.vertex);
 				o.wPos = mul(unity_ObjectToWorld, v.vertex);
 				o.grabPos = ComputeGrabScreenPos(o.pos);
+				o.scrPos = ComputeScreenPos(o.pos);
 				return o;
 			}
 
 			fixed4 frag(v2f i) : SV_Target
 			{
-				// Albedo comes from a texture tinted by color
 				fixed4 c = _Color;
 				float fBm_xzt = .5*fBm(float3(i.wPos.xz, _Time.y)) + .5;
 				float3 lightDir = normalize(_WorldSpaceLightPos0.xyz);
 				float3 viewDir = normalize(_WorldSpaceCameraPos - i.wPos);
+
 				c.rbg *= (float3)fBm_xzt;
 				float2 dheight = float2(
 					.5*fBm(float3(i.wPos.xz + float2(.001, 0), _Time.y)) + .5 - fBm_xzt,
@@ -111,6 +110,11 @@
 				float refPower = dot(ref, viewDir);
 				float3 specPower = pow(max(0,refPower), _SpecPower);
 				c.rgb += (float3)specPower;
+
+				float depth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, UNITY_PROJ_COORD(i.scrPos)));
+				float surfDepth = UNITY_Z_0_FAR_FROM_CLIPSPACE(i.scrPos.z);
+				float depthDiff = depth - surfDepth;
+				c.a = 1 - saturate(1 / pow(_Opacity, depthDiff));
 
 				return c;
 			}
