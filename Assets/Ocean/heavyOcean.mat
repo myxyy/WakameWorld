@@ -58,6 +58,7 @@ Material:
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
+    - _Distortion: 0.104
     - _DstBlend: 10
     - _GlossMapScale: 1
     - _Glossiness: 1
@@ -65,12 +66,13 @@ Material:
     - _Metallic: 1
     - _Mode: 3
     - _OcclusionStrength: 1
-    - _Opacity: 1.083
+    - _Opacity: 1.336
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecPower: 7.85
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _Test: 0.05
     - _Transparency: 1.08
     - _UVSec: 0
     - _ZWrite: 0
