@@ -1,8 +1,9 @@
 ﻿Shader "WakameIsland/Ocean" {
-	Properties {
-		_Color ("Color", Color) = (1,1,1,1)
-		_SpecPower ("Specular", Float) = 10.0
-		_Opacity ("Opacity", Range(1,2)) = 1.1
+	Properties{
+		_Color("Color", Color) = (1,1,1,1)
+		_SpecPower("Specular", Float) = 10.0
+		_Opacity("Opacity", Range(1,2)) = 1.1
+		_Distortion("Distortion", Range(0,1)) = 0.2
 	}
 	SubShader {
 		Tags { "RenderType"="Transparent" "Queue"="Transparent"}
@@ -81,6 +82,7 @@
 
 			float _SpecPower;
 			float _Opacity;
+			float _Distortion;
 			fixed4 _Color;
 
 			v2f vert(appdata v) {
@@ -111,15 +113,23 @@
 				float3 specPower = pow(max(0,refPower), _SpecPower);
 				c.rgb += (float3)specPower;
 
-				float depth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, UNITY_PROJ_COORD(i.scrPos)));
+				float4 grabUV = i.grabPos;
+				grabUV.xy = (i.grabPos + _Distortion * normal.xz);
+
+				float depth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, UNITY_PROJ_COORD(grabUV)));
 				float surfDepth = UNITY_Z_0_FAR_FROM_CLIPSPACE(i.scrPos.z);
 				float depthDiff = depth - surfDepth;
-				c.a = 1 - saturate(1 / pow(_Opacity, depthDiff));
+				float transparency = 1 - saturate(1 / pow(_Opacity, depthDiff));
+				//c.a = transparency;
+
+				fixed4 grabCol = tex2D(_GrabTex, grabUV.xy/grabUV.w);
+				c.rgb = c.rgb*transparency + grabCol * (1 - transparency);
+				//c.rgb = grabCol;
 
 				return c;
 			}
 			ENDCG
 		}
 	}
-	FallBack "Diffuse"
+	//FallBack "Diffuse"
 }
