@@ -6,7 +6,7 @@
 		_Distortion("Distortion", Range(0,1)) = 0.2
 	}
 	SubShader {
-		Tags { "RenderType"="Transparent" "Queue"="Transparent"}
+		Tags { "RenderType"="Transparent" "Queue"="Overlay"}
 		LOD 200
 
 		Blend SrcAlpha OneMinusSrcAlpha
