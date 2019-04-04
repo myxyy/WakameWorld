@@ -321,7 +321,7 @@ MonoBehaviour:
     Events:
     - Name: 
       EventType: 18
-      ParameterString: Assets/heavyOcean.mat
+      ParameterString: Assets/Ocean/heavyOcean.mat
       ParameterBoolOp: 0
       ParameterBool: 0
       ParameterFloat: 0
@@ -4243,7 +4243,7 @@ MonoBehaviour:
     Events:
     - Name: 
       EventType: 18
-      ParameterString: Assets/lightOcean.mat
+      ParameterString: Assets/Ocean/lightOcean.mat
       ParameterBoolOp: 0
       ParameterBool: 0
       ParameterFloat: 0
@@ -4694,7 +4694,7 @@ GameObject:
   - component: {fileID: 1822768696}
   - component: {fileID: 1822768694}
   m_Layer: 0
-  m_Name: Quad
+  m_Name: Ocean
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
