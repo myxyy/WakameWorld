@@ -9,9 +9,12 @@
 		Tags { "RenderType"="Transparent" "Queue"="Overlay"}
 		LOD 200
 
-		Blend SrcAlpha OneMinusSrcAlpha
+		//Blend SrcAlpha OneMinusSrcAlpha
+		//ZTest Always
 
-		GrabPass {"_GrabTex"}
+		GrabPass {
+			"_GrabTex"
+		}
 
 		Pass {
 			CGPROGRAM
@@ -114,15 +117,17 @@
 				c.rgb += (float3)specPower;
 
 				float4 grabUV = i.grabPos;
+				float truedepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, UNITY_PROJ_COORD(grabUV)));
 				grabUV.xy = (i.grabPos + _Distortion * normal.xz);
 
 				float depth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, UNITY_PROJ_COORD(grabUV)));
 				float surfDepth = UNITY_Z_0_FAR_FROM_CLIPSPACE(i.scrPos.z);
 				float depthDiff = depth - surfDepth;
-				float transparency = 1 - saturate(1 / pow(_Opacity, depthDiff));
+				float truedepthDiff = truedepth - surfDepth;
+				float transparency = 1 - saturate(1 / pow(_Opacity, depthDiff > 0 ? depthDiff : truedepthDiff));
 				//c.a = transparency;
 
-				fixed4 grabCol = tex2D(_GrabTex, grabUV.xy/grabUV.w);
+				fixed4 grabCol = tex2D(_GrabTex, (depthDiff > 0 ? grabUV.xy : i.grabPos.xy)/grabUV.w);
 				c.rgb = c.rgb*transparency + grabCol * (1 - transparency);
 				//c.rgb = grabCol;
 
