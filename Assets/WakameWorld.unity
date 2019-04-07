@@ -4191,11 +4191,11 @@ Prefab:
     - target: {fileID: 11473296, guid: 9cb1e183d39ba432db5c583c4548819c, type: 2}
       propertyPath: DynamicMaterials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: c5fe8fcef41560347a5b25727a299b9f, type: 2}
+      objectReference: {fileID: 2100000, guid: bb772c9496969b84596660de5ad73210, type: 2}
     - target: {fileID: 11473296, guid: 9cb1e183d39ba432db5c583c4548819c, type: 2}
       propertyPath: DynamicMaterials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: 5cb207cac66c8a8458bbbfd922d607f9, type: 2}
+      objectReference: {fileID: 2100000, guid: c5fe8fcef41560347a5b25727a299b9f, type: 2}
     - target: {fileID: 11473296, guid: 9cb1e183d39ba432db5c583c4548819c, type: 2}
       propertyPath: capacity
       value: 8
@@ -4203,11 +4203,11 @@ Prefab:
     - target: {fileID: 11473296, guid: 9cb1e183d39ba432db5c583c4548819c, type: 2}
       propertyPath: DynamicMaterials.Array.data[2]
       value: 
-      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 2100000, guid: 5cb207cac66c8a8458bbbfd922d607f9, type: 2}
     - target: {fileID: 11473296, guid: 9cb1e183d39ba432db5c583c4548819c, type: 2}
       propertyPath: DynamicMaterials.Array.data[3]
       value: 
-      objectReference: {fileID: 2100000, guid: bb772c9496969b84596660de5ad73210, type: 2}
+      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 11473296, guid: 9cb1e183d39ba432db5c583c4548819c, type: 2}
       propertyPath: DynamicMaterials.Array.data[4]
       value: 
@@ -4329,6 +4329,24 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e647a31f88a2bdc4ba7af381cd4fb2a1, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &1437193824 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: e647a31f88a2bdc4ba7af381cd4fb2a1, type: 3}
+  m_PrefabInternal: {fileID: 1437193823}
+--- !u!64 &1437193825
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1437193824}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: e647a31f88a2bdc4ba7af381cd4fb2a1, type: 3}
 --- !u!1 &1508351631
 GameObject:
   m_ObjectHideFlags: 0
