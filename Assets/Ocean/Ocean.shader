@@ -39,7 +39,7 @@
 				float4 scrPos : TEXCOORD1;
 			};
 
-			float random3(float3 p) {
+			float3 random3(float3 p) {
 				return frac(sin(float3(dot(p, float3(12.9898, 78.233, 54.5436)), dot(p, float3(32.2352, 57.567, 76.4532)), dot(p, float3(43.2452, 65.366, 23.6543))))*43758.5453);
 			}
 
@@ -48,24 +48,24 @@
 				float3 pf = frac(p);
 				float3 pf0 = pf * pf*(3. - 2.*pf);
 
-				float3 v000 = 2.*random3(pi + float3(0, 0, 0)) - 1.;
-				float3 v001 = 2.*random3(pi + float3(0, 0, 1)) - 1.;
-				float3 v010 = 2.*random3(pi + float3(0, 1, 0)) - 1.;
-				float3 v011 = 2.*random3(pi + float3(0, 1, 1)) - 1.;
-				float3 v100 = 2.*random3(pi + float3(1, 0, 0)) - 1.;
-	;			float3 v101 = 2.*random3(pi + float3(1, 0, 1)) - 1.;
-				float3 v110 = 2.*random3(pi + float3(1, 1, 0)) - 1.;
-				float3 v111 = 2.*random3(pi + float3(1, 1, 1)) - 1.;
+				float3 v000 = 2.*random3(pi + float3(0, 0, 0)) - (float3)1.;
+				float3 v001 = 2.*random3(pi + float3(0, 0, 1)) - (float3)1.;
+				float3 v010 = 2.*random3(pi + float3(0, 1, 0)) - (float3)1.;
+				float3 v011 = 2.*random3(pi + float3(0, 1, 1)) - (float3)1.;
+				float3 v100 = 2.*random3(pi + float3(1, 0, 0)) - (float3)1.;
+	;			float3 v101 = 2.*random3(pi + float3(1, 0, 1)) - (float3)1.;
+				float3 v110 = 2.*random3(pi + float3(1, 1, 0)) - (float3)1.;
+				float3 v111 = 2.*random3(pi + float3(1, 1, 1)) - (float3)1.;
 
-				float3 vx00 = lerp(dot(v000, pf - float3(0, 0, 0)), dot(v100, pf - float3(1, 0, 0)), pf0.x);
-				float3 vx01 = lerp(dot(v001, pf - float3(0, 0, 1)), dot(v101, pf - float3(1, 0, 1)), pf0.x);
-				float3 vx10 = lerp(dot(v010, pf - float3(0, 1, 0)), dot(v110, pf - float3(1, 1, 0)), pf0.x);
-				float3 vx11 = lerp(dot(v011, pf - float3(0, 1, 1)), dot(v111, pf - float3(1, 1, 1)), pf0.x);
+				float vx00 = lerp(dot(v000, pf - float3(0, 0, 0)), dot(v100, pf - float3(1, 0, 0)), pf0.x);
+				float vx01 = lerp(dot(v001, pf - float3(0, 0, 1)), dot(v101, pf - float3(1, 0, 1)), pf0.x);
+				float vx10 = lerp(dot(v010, pf - float3(0, 1, 0)), dot(v110, pf - float3(1, 1, 0)), pf0.x);
+				float vx11 = lerp(dot(v011, pf - float3(0, 1, 1)), dot(v111, pf - float3(1, 1, 1)), pf0.x);
 
-				float3 vxy0 = lerp(vx00, vx10, pf0.y);
-				float3 vxy1 = lerp(vx01, vx11, pf0.y);
+				float vxy0 = lerp(vx00, vx10, pf0.y);
+				float vxy1 = lerp(vx01, vx11, pf0.y);
 
-				float3 vxyz = lerp(vxy0, vxy1, pf0.z);
+				float vxyz = lerp(vxy0, vxy1, pf0.z);
 
 				return vxyz;
 			}
@@ -74,12 +74,14 @@
 				float f = 0;
 				float3 p0 = p;
 				f += .5*perlinNoise(p0);
-				p0 *= 2.0537;
+				p0 *= 2.;
 				f += .25*perlinNoise(p0);
-				p0 *= 2.0654;
+				p0 *= 2.;
 				f += .125*perlinNoise(p0);
-				p0 *= 2.0643;
+				p0 *= 2.;
 				f += .0625*perlinNoise(p0);
+				//p0 *= 2.;
+				//f += .03125*perlinNoise(p0);
 				return f;
 			}
 
