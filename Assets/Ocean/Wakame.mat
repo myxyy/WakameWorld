@@ -20,4 +20,5 @@ Material:
     m_TexEnvs: []
     m_Floats:
     - _Radius: 0.5
+    - _Test: -1.07
     m_Colors: []

@@ -1,6 +1,7 @@
-﻿Shader"Raymarching/Wakame3"{
+﻿Shader"Raymarching/Wakame"{
 	Properties{
 		_Radius("Radius", float) = 0.5
+		_Test("Test", float) = 1.0
 	}
 	SubShader{
 		Tags{
@@ -20,16 +21,12 @@
 			#include "UnityCG.cginc"
 	
 			float _Radius;
+			float _Test;
 	
 			#define STEPS 64
 
 			struct appdata {
 				float4 vertex : POSITION;
-			};
-
-			struct ray {
-				float3 org;
-				float3 dir;
 			};
 
 			struct v2f {
@@ -56,19 +53,7 @@
 				return frac(sin(float2(dot(p, float2(12.9898, 78.233)), dot(p, float2(32.2352, 57.567))))*43758.5453);
 			}
 
-			float wakameshape(float3 pos, float3 center)
-			{
-				pos -= center;
-				float plane = abs(pos.z) - .01;
-				pos.y = 1.5*pos.y+.0;
-				pos.y = min(pos.y, .76);
-				float curve = 1.*pos.y*pos.y*(3. - 4.*pos.y)+.01;
-				float side = abs(pos.x) - (.4 + .1*sin(60.*pos.y-5.*_Time.y))*curve;
-				return max(-pos.y ,max(plane,side));
-				//return max(plane, side);
-			}
-
-			float wakameshape2(float3 pos)
+			float wakameshape(float3 pos)
 			{
 				float plane = abs(pos.z) - .01;
 				pos.y = 1.5*pos.y + .0;
@@ -78,25 +63,41 @@
 				return max(-pos.y, max(plane, side));
 			}
 
-			float wakame(float3 pos, float3 center)
+			float wakameshape2(float3 pos)
 			{
-				//pos -= center;
-				pos.z += .05*sin(10.*pos.y+_Time.y*2.);
-				pos.x += .03*sin(10.*pos.y+_Time.y*3.);
-				return wakameshape(pos, center);
+				float3 p = pos;
+				float plane = abs(pos.z) - .1;
+				p.y = 1.5*p.y + .0;
+				p.y = min(p.y, .76);
+				float curve = 1.*p.y*p.y*(3. - 4.*p.y) + .01;
+				float side = abs(p.x) - (.4 + .1*sin(60.*p.y - 5.*_Time.y))*curve;
+				side = abs(p.x) - .1;
+				return max(pos.y-.5, max(plane, side));// max(-pos.y, max(plane, side));
 			}
 
-			float wakame2(float3 pos)
+			float testshape(float3 pos)
+			{
+				return max(abs(pos.z) - .02, pos.y - .5);
+			}
+
+			float wakame(float3 pos)
 			{
 				//pos -= center;
+
 				pos.z += .05*sin(10.*pos.y + _Time.y*2.);
 				pos.x += .03*sin(10.*pos.y + _Time.y*3.);
-				return wakameshape2(pos);
+				return wakameshape(pos);
 			}
 
-			float sphere(float3 pos, float3 center, float radius)
+			float sphere(float3 pos)
 			{
-				return distance(pos, center) - radius;
+				return length(pos) - 1.;
+			}
+
+			float cube(float3 pos)
+			{
+				pos = abs(pos) - 1.;
+				return max(pos.x, max(pos.y, pos.z));
 			}
 
 			float2 rotate(float2 pos, float rad)
@@ -104,18 +105,10 @@
 				return float2(cos(rad)*pos.x - sin(rad)*pos.y, sin(rad)*pos.x + cos(rad)*pos.y);
 			}
 
-			float sdf(float3 pos, float3 center)
-			{
-				pos.xz = (random2(floor(pos.xz+.5))-.5)*.5+frac(pos.xz+.5)-.5;
-				//pos.xz = frac(pos.xz+.5)-.5;
-				//return sphere(pos, mul(unity_ObjectToWorld, float4(0, 0, 0, 1)).xyz, _Radius);
-				return pos.y-center.y > 1. ? pos.y-center.y : wakame(pos, center);
-				//return sphere(pos, center, _Radius);
-			}
-
-			float sdf2(float3 pos) {
-				pos.xz = (random2(floor(pos.xz + .5)) - .5)*.5 + frac(pos.xz + .5) - .5;
-				return pos.y > 1. ? pos.y : wakame2(pos);
+			float sdf(float3 pos) {
+				pos = pos - mul(unity_ObjectToWorld, float4(0, 0, 0, 1)) - float3(0, _Test, 0);
+				pos.xz = (random2(floor(pos.xz + .5)) - .5)*0. + frac(pos.xz + .5) - .5;
+				return pos.y > 1. ? pos.y : wakame(pos);
 			}
 
 			float getDepth(float3 rPos) {
@@ -123,38 +116,53 @@
 				return (vpPos.z / vpPos.w);
 			}
 
+			float raymarch(float3 ro, float3 rd)
+			{
+				float dist, rLen = 0;
+				float3 rPos = ro;
+				for (int i = 0; i < STEPS; i++) {
+					dist = sdf(rPos);
+					rLen += dist;
+					rPos = ro + rLen * rd*.9;
+				}
+				if (abs(dist) < .0001) return rLen;
+				else return -1;
+			}
+
 			frag_out frag(v2f i)
 			{
 				frag_out o;
 				float3 worldPosition = i.wPos;
-				float4 objPos = mul(unity_ObjectToWorld, float4(0, 0, 0, 1));
+				//float4 objPos = mul(unity_ObjectToWorld, float4(0, 0, 0, 1));
 				//float3 cameraPos = mul(unity_WorldToObject, float4(_WorldSpaceCameraPos, 1)).xyz;
 				float3 cameraPos = _WorldSpaceCameraPos;
 				//float3 center = mul(unity_ObjectToWorld, float4(0, 0, 0, 1)).xyz;
-				float3 center = float3(0, mul(unity_ObjectToWorld, float4(0,0,0,1)).y-1., 0);
-				ray r;
-				r.dir = normalize(i.wPos - cameraPos);
+				//float3 center = float3(0, mul(unity_ObjectToWorld, float4(0,0,0,1)).y-1., 0);
+
+				float3 rdir = normalize(i.wPos - cameraPos);
 				//r.org = worldPosition;
-				r.org = cameraPos;
+
+				float3 rorg = cameraPos;
 				float rLen = 0;
-				float3 rPos = r.org;
-				float dist = 0;
+				float3 rPos = rorg;
+				float dist;
 
 				for (int ind = 0; ind < STEPS; ind++)
 				{
-					dist = sdf(rPos, center);
+					dist = sdf(rPos);
 					rLen += dist;
-					rPos = r.org + rLen * r.dir;
+					rPos = rorg + rLen * rdir*.9;
 				}
 
 				o.depth = getDepth(mul(unity_WorldToObject, float4(rPos,1.)).xyz);
 				//o.depth = 0;
 
 				float d = .0001;
+				//float3 rPos4sdf = rPos - objPos.xyz - float3(0, _Test, 0);
 				float3 normal = normalize(float3(
-						sdf(rPos + float3(d, 0, 0), center) - sdf(rPos + float3(-d, 0, 0), center),
-						sdf(rPos + float3(0, d, 0), center) - sdf(rPos + float3(0, -d, 0), center),
-						sdf(rPos + float3(0, 0, d), center) - sdf(rPos + float3(0, 0, -d), center)
+						sdf(rPos + float3(d, 0, 0)) - sdf(rPos + float3(-d, 0, 0)),
+						sdf(rPos + float3(0, d, 0)) - sdf(rPos + float3(0, -d, 0)),
+						sdf(rPos + float3(0, 0, d)) - sdf(rPos + float3(0, 0, -d))
 				));
 
 			
@@ -163,7 +171,8 @@
 					o.color = fixed4(float3(0,.1,0)*max(0,dot(mul(unity_WorldToObject, _WorldSpaceLightPos0).xyz, normal)),1);
 					o.color += fixed4(.0, .1, .0, 0.);
 				}else {
-					o.color = fixed4(0,0,0,0);
+					discard;
+					//o.color = fixed4(0,0,0,0);
 				}
 				return o;
 			}
