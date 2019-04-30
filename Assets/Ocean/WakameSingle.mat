@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Wakame
-  m_Shader: {fileID: 4800000, guid: 67daf294a424b274aa8e93ef45156b19, type: 3}
+  m_Name: WakameSingle
+  m_Shader: {fileID: 4800000, guid: e6077fd822d5fc245b4620b5a7da0845, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -20,6 +20,6 @@ Material:
     m_TexEnvs: []
     m_Floats:
     - _Radius: 0.5
-    - _Test: -1.07
+    - _Test: -0.26
     - _Test2: 0
     m_Colors: []

@@ -1,4 +1,4 @@
-﻿Shader"Raymarching/Wakame"{
+﻿Shader"Raymarching/WakameSingle"{
 	Properties{
 		_Test("Test", float) = 1.0
 		_Test2("Test2", range(0,.5)) = 1.0
@@ -6,7 +6,7 @@
 	SubShader{
 		Tags{
 			"RenderType" = "Transparent"
-			"Queue" = "Transparent"
+			"Queue" = "Geometry"
 			"LightMode" = "ForwardBase"
 		}
 		Pass{
@@ -107,15 +107,8 @@
 
 			float sdf(float3 pos) {
 				float3 p = pos;
-				float2 latp = frac(pos.xz + .5) - .5;
 				p = pos - mul(unity_ObjectToWorld, float4(0, 0, 0, 1)) - float3(0, _Test, 0);
-				p.xz = latp + (random2(floor(pos.xz + .5)) - .5)*.0 + _Test2;
-				p.xz = rotate(p.xz, random2(floor(pos.xz + .5)).x*6.183184);
-				p.y /= (random2(floor(pos.xz + .5)).x*2. + 1.);
-				float2 lattice = .5.xx - abs(latp);
-				float dflw = min(lattice.x, lattice.y); // distance from lattice wall
-				//return pos.y > 1. ? pos.y : wakame(pos);
-				return p.y > 1. ? p.y : dflw > .1 ? min(dflw, wakame(p)) : wakame(p);
+				return wakame(p);
 			}
 
 			float getDepth(float3 rPos) {
