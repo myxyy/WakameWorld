@@ -4772,6 +4772,25 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 57d109405ecde8f468c02e44fdaaaa1b, type: 3}
+--- !u!1 &857214785 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1076456074016122, guid: eb185625488402a4cb8a3eed3d4e8fc5,
+    type: 2}
+  m_PrefabInternal: {fileID: 257691872}
+--- !u!64 &857214786
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 857214785}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 0b394cbc52d652a49b86e28b5e4b5371, type: 3}
 --- !u!1 &925532374
 GameObject:
   m_ObjectHideFlags: 0
@@ -9417,6 +9436,18 @@ MonoBehaviour:
         m_AssemblyName: mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
     mModComponentName: PlayerModComponentJump
     mAllowNameEdit: 0
+--- !u!114 &1350087641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1350087635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 229740497, guid: 4ecd63eff847044b68db9453ce219299, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contentType: 1
 --- !u!1 &1399350490
 GameObject:
   m_ObjectHideFlags: 0
