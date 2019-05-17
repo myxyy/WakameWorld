@@ -70,18 +70,46 @@
 				return vxyz;
 			}
 
+			float N13(float3 p) {
+				float3 i = floor(p);
+				float3 f = frac(p);
+				f *= f * (3. - 2.*f);
+
+				float3 v000 = 2.*random3(i + float3(0, 0, 0));
+				float3 v001 = 2.*random3(i + float3(0, 0, 1));
+				float3 v010 = 2.*random3(i + float3(0, 1, 0));
+				float3 v011 = 2.*random3(i + float3(0, 1, 1));
+				float3 v100 = 2.*random3(i + float3(1, 0, 0));
+	;			float3 v101 = 2.*random3(i + float3(1, 0, 1));
+				float3 v110 = 2.*random3(i + float3(1, 1, 0));
+				float3 v111 = 2.*random3(i + float3(1, 1, 1));
+
+				float vx00 = lerp(v000, v100, f.x);
+				float vx01 = lerp(v001, v101, f.x);
+				float vx10 = lerp(v010, v110, f.x);
+				float vx11 = lerp(v011, v111, f.x);
+
+				float vxy0 = lerp(vx00, vx10, f.y);
+				float vxy1 = lerp(vx01, vx11, f.y);
+
+				float vxyz = lerp(vxy0, vxy1, f.z);
+
+				return vxyz;
+
+			}
+
 			float fBm(float3 p) {
 				float f = 0;
 				float3 p0 = p;
-				f += .5*perlinNoise(p0);
-				p0 *= 2.;
-				f += .25*perlinNoise(p0);
-				p0 *= 2.;
-				f += .125*perlinNoise(p0);
-				p0 *= 2.;
-				f += .0625*perlinNoise(p0);
-				//p0 *= 2.;
-				//f += .03125*perlinNoise(p0);
+				float amp = 1.;
+				for (int i = 0; i < 4; i++) {
+					amp *= .5;
+					f += amp * N13(p0);
+					p0 *= 2.;
+					p0.xz = mul(float2x2(cos(1), sin(1), -sin(1), cos(1)), p0.xz);
+					p0.xy = mul(float2x2(cos(1), sin(1), -sin(1), cos(1)), p0.xy);
+				}
+
 				return f;
 			}
 
