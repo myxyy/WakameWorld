@@ -1,22 +1,21 @@
 fileFormatVersion: 2
-guid: 3b022145ececf6147abd072a583190a1
+guid: c1b0ec674881a864d989404b7789b97b
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: Camera
-    100002: Circle
-    100004: //RootNode
-    100006: Lamp
-    400000: Camera
-    400002: Circle
-    400004: //RootNode
-    400006: Lamp
-    2000000: Camera
+    100000: frame
+    100002: //RootNode
+    100004: plate
+    400000: frame
+    400002: //RootNode
+    400004: plate
     2100000: No Name
-    2300000: Circle
-    3300000: Circle
-    4300000: Circle
-    10800000: Lamp
+    2300000: frame
+    2300002: plate
+    3300000: frame
+    3300002: plate
+    4300000: plate
+    4300002: frame
   externalObjects: {}
   materials:
     importMaterials: 1
