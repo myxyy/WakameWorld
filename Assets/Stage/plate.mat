@@ -6,14 +6,15 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: New Material
-  m_Shader: {fileID: 4800000, guid: d34ddb690407bf04c8c9788205512415, type: 3}
-  m_ShaderKeywords: _GLOSSYREFLECTIONS_OFF _SPECULARHIGHLIGHTS_OFF
+  m_Name: plate
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: Transparent
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -142,7 +143,6 @@ Material:
     - _BumpScale: 1
     - _CustomShadow2nd: 0
     - _Cutoff: 0.5
-    - _CutoutCutoutAdjust: 0
     - _DetailNormalMapScale: 1
     - _DoubleSidedBackfaceHueShiftFromBase: 0
     - _DoubleSidedBackfaceLightIntensity: 0.5
@@ -150,21 +150,21 @@ Material:
     - _DoubleSidedBackfaceUseColorShift: 0
     - _DoubleSidedBackfaceValueFromBase: 1
     - _DoubleSidedFlipBackfaceNormal: 0
-    - _DstBlend: 0
+    - _DstBlend: 10
     - _EmissionParallaxDepth: 0
     - _EmissionParallaxDepthMaskInvert: 0
     - _GlossBlend: 0.5
     - _GlossMapScale: 1
     - _GlossPower: 0.5
-    - _Glossiness: 0
-    - _GlossyReflections: 0
+    - _Glossiness: 0.485
+    - _GlossyReflections: 1
     - _LightSampling: 0
     - _MatcapBlend: 1
     - _MatcapBlendMode: 3
     - _MatcapNormalMix: 1
     - _MatcapShadeMix: 0
-    - _Metallic: 0
-    - _Mode: 0
+    - _Metallic: 0.224
+    - _Mode: 3
     - _OcclusionStrength: 1
     - _OtherShadowAdjust: -0.1
     - _OtherShadowBorderSharpness: 3
@@ -195,7 +195,7 @@ Material:
     - _ShadowCapBlend: 1
     - _ShadowCapBlendMode: 3
     - _ShadowCapNormalMix: 1
-    - _ShadowCasterCulling: 0
+    - _ShadowCasterCulling: 2
     - _ShadowIndirectIntensity: 0.25
     - _ShadowPlanB2HueShiftFromBase: 0
     - _ShadowPlanB2SaturationFromBase: 1
@@ -215,10 +215,10 @@ Material:
     - _Shadowborder: 0.6
     - _ShadowborderBlur: 0.05
     - _SmoothnessTextureChannel: 0
-    - _SpecularHighlights: 0
+    - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
-    - _UseDoubleSided: 1
+    - _UseDoubleSided: 0
     - _UseEmissionParallax: 0
     - _UseGloss: 0
     - _UseOutline: 0
@@ -230,9 +230,9 @@ Material:
     - _Version: 1024
     - _VertexColorBlendDiffuse: 0
     - _VertexColorBlendEmissive: 0
-    - _ZWrite: 1
+    - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionParallaxColor: {r: 1, g: 1, b: 1, a: 1}
     - _GlossColor: {r: 1, g: 1, b: 1, a: 1}
