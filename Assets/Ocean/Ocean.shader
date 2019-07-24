@@ -4,6 +4,8 @@
 		_SpecPower("Specular", Float) = 10.0
 		_Opacity("Opacity", Range(1,2)) = 1.1
 		_Distortion("Distortion", Range(0,1)) = 0.2
+		_SunColor("SunColor", Color) = (1,1,0,1)
+		_AmbientColor("AmbientColor", Color) = (1,0,0,1)
 	}
 	SubShader {
 		Tags { "Queue"="AlphaTest+500"}
@@ -117,6 +119,8 @@
 			float _Opacity;
 			float _Distortion;
 			fixed4 _Color;
+			fixed4 _SunColor;
+			fixed4 _AmbientColor;
 
 			v2f vert(appdata v) {
 				v2f o;
@@ -144,7 +148,7 @@
 				float3 ref = reflect(-lightDir, normal);
 				float refPower = dot(ref, viewDir);
 				float3 specPower = pow(max(0,refPower), _SpecPower);
-				c.rgb += (float3)specPower;
+				c.rgb += (float3)specPower*lerp(_AmbientColor, _SunColor, pow(max(0,refPower),_SpecPower*2.));
 
 				float4 grabUV = i.grabPos;
 				float truedepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, UNITY_PROJ_COORD(grabUV)));
