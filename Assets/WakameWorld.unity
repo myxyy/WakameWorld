@@ -11244,7 +11244,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &528564906
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -14295,7 +14295,7 @@ GameObject:
   - component: {fileID: 781468232}
   - component: {fileID: 781468231}
   - component: {fileID: 781468230}
-  m_Layer: 21
+  m_Layer: 22
   m_Name: SyrupColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20885,7 +20885,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 2097152
+    m_Bits: 6291456
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 31a2f1f461b38e24999cb08b7d1af1ec, type: 2}
   m_TargetDisplay: 0
