@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: "\u3084\u3050\u3089\u30C6\u30AF\u30B9\u30C1\u30E3"
-  m_Shader: {fileID: 4800000, guid: 9566a373fffe627408d31026ce69389d, type: 3}
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: USE_GLOSS USE_OUTLINE USE_REFLECTION_PROBE USE_VERTEX_LIGHT _LIGHTSAMPLING_ARKTOON
     _MATCAPBLENDMODE_UNUSED _SHADOWCAPBLENDMODE_UNUSED _SHADOWCASTERCULLING_BACK
   m_LightmapFlags: 4
@@ -75,6 +75,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _OutlineTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _OutlineWidthMask:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -132,7 +136,11 @@ Material:
     - _CustomShadow2nd: 0
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
+    - _DoubleSidedBackfaceHueShiftFromBase: 0
     - _DoubleSidedBackfaceLightIntensity: 0.5
+    - _DoubleSidedBackfaceSaturationFromBase: 1
+    - _DoubleSidedBackfaceUseColorShift: 0
+    - _DoubleSidedBackfaceValueFromBase: 1
     - _DoubleSidedFlipBackfaceNormal: 0
     - _DstBlend: 0
     - _EmissionParallaxDepth: 0
@@ -210,6 +218,7 @@ Material:
     - _UseReflectionProbe: 1
     - _UseRim: 0
     - _UseVertexLight: 1
+    - _Version: 1024
     - _VertexColorBlendDiffuse: 0
     - _VertexColorBlendEmissive: 0
     - _ZWrite: 1
