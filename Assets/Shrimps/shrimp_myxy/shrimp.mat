@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: shrimp
-  m_Shader: {fileID: 4800000, guid: d34ddb690407bf04c8c9788205512415, type: 3}
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -152,7 +152,7 @@ Material:
     - _GlossBlend: 0.5
     - _GlossMapScale: 1
     - _GlossPower: 0.5
-    - _Glossiness: 0.5
+    - _Glossiness: 0
     - _GlossyReflections: 1
     - _LightSampling: 0
     - _MatcapBlend: 1
