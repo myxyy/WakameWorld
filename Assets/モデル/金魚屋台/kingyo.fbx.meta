@@ -16,7 +16,17 @@ ModelImporter:
     3300002: Yatai
     4300000: Yatai
     4300002: Mizu
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mizu
+    second: {fileID: 2100000, guid: 7d7f50f64d114204e816bb8bfe2fb30a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: kingyonomizu
+    second: {fileID: 2100000, guid: 2becc298e0263c94f99723031bde3c8d, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -54,7 +64,7 @@ ModelImporter:
     importCameras: 1
     importLights: 1
     swapUVChannels: 0
-    generateSecondaryUV: 0
+    generateSecondaryUV: 1
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
