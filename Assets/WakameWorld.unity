@@ -39105,7 +39105,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "2019/08/12\n\u7B2C58.5\u56DE"
+  m_Text: "2019/08/19\n\u7B2C59\u56DE"
 --- !u!222 &1831739870
 CanvasRenderer:
   m_ObjectHideFlags: 0
