@@ -55,4 +55,6 @@ crashlytics-build.properties
 
 # VRCSDK
 [Aa]ssets/VRCSDK
+[Aa]ssets/VRCSDK.meta
 [Aa]ssets/Plugins
+[Aa]ssets/Plugins.meta
