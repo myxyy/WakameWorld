@@ -1,0 +1,36 @@
+わかめワールド製作者向けノート
+
+■Assets以下のフォルダー構成
+
+・配布アセットはAssets以下に直接配置を推奨
+・毎週作るものは「みんなの制作物」へ
+
+■Hierarchyの構成
+
+・動かない物は「StaticObjects」以下に配置
+  ・ライトベイクする物は「ライトベイク対象」以下に配置し、以下のStatic設定にチェックを入れる
+    ・Lightmap Static
+    ・Batching Static
+    ・Occludee Static
+    ・Reflection Probe Static
+  ・ライトベイクしない物は「ライトベイク非対象」以下に配置し、以下のStatic設定にチェックを入れる
+    ・Batching Static
+    ・Occludee Static
+    ・Reflection Probe Static
+  ・チェックを入れる際は「StaticObjects」のチェックを一旦外して「Yes, change children」で全オブジェクトの
+    チェックを外し、同様に「Yes, change children」でチェックを入れていくとチェックし忘れが無くて良い。
+
+  ・Occluder StaticはOcclusion Cullingをとりあえず無効にしてるのでオフ
+  ・Navigation StaticとOff Mesh Link GenerationはVRChatで使わないっぽい？のでオフ
+
+・アニメーションしたりオンオフ切り替えたり、シェーダーの都合でStaticにできない物なんかは
+  「DynamicObject」以下に配置
+
+・ライトは「Light」以下に配置
+  ・ただし、灯籠などオブジェクトとセットで配置したい場合はStaticObjectやDynamicObject内に置いても良し
+
+■ライトのベイク
+
+・ライトベイク対象のオブジェクトの追加、Bakedライトの追加/変更、Skyboxの変更等を行った場合は
+  LightingタブのGenerate Lightingボタンを押してライトベイクを実行する。
+  ・Assets/WakameWorld/以下のファイルが更新されるので、コミットすること。
