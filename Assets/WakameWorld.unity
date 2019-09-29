@@ -40238,6 +40238,25 @@ MeshCollider:
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 6b4acbf2d81ba194b88943a98f748499, type: 3}
   m_PrefabInternal: {fileID: 1369891517}
+--- !u!1 &784665514 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1490292015901128, guid: 287d0a5825b9c2a4c93aeb377a869109,
+    type: 2}
+  m_PrefabInternal: {fileID: 1420371778}
+--- !u!64 &784665515
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 784665514}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 0}
 --- !u!1 &792402504
 GameObject:
   m_ObjectHideFlags: 0
