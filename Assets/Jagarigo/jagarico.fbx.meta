@@ -1,0 +1,209 @@
+fileFormatVersion: 2
+guid: df8926b5ac9e08f41b0ff6445f04950d
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Huta
+    100002: imokennpi
+    100004: imokennpi.001
+    100006: imokennpi.002
+    100008: imokennpi.003
+    100010: imokennpi.004
+    100012: imokennpi.005
+    100014: imokennpi.006
+    100016: imokennpi.007
+    100018: imokennpi.008
+    100020: imokennpi.009
+    100022: //RootNode
+    100024: Jagarigo
+    100026: wakame_steck
+    100028: wakame_steck.001
+    100030: wakame_steck.002
+    100032: wakame_steck.003
+    100034: wakame_steck.004
+    100036: wakame_steck.005
+    100038: wakame_steck.006
+    100040: wakame_steck.007
+    100042: wakame_steck.008
+    100044: wakame_steck.009
+    400000: Huta
+    400002: imokennpi
+    400004: imokennpi.001
+    400006: imokennpi.002
+    400008: imokennpi.003
+    400010: imokennpi.004
+    400012: imokennpi.005
+    400014: imokennpi.006
+    400016: imokennpi.007
+    400018: imokennpi.008
+    400020: imokennpi.009
+    400022: //RootNode
+    400024: Jagarigo
+    400026: wakame_steck
+    400028: wakame_steck.001
+    400030: wakame_steck.002
+    400032: wakame_steck.003
+    400034: wakame_steck.004
+    400036: wakame_steck.005
+    400038: wakame_steck.006
+    400040: wakame_steck.007
+    400042: wakame_steck.008
+    400044: wakame_steck.009
+    2100000: stick
+    2100002: Jagarico
+    2300000: Huta
+    2300002: imokennpi
+    2300004: imokennpi.001
+    2300006: imokennpi.002
+    2300008: imokennpi.003
+    2300010: imokennpi.004
+    2300012: imokennpi.005
+    2300014: imokennpi.006
+    2300016: imokennpi.007
+    2300018: imokennpi.008
+    2300020: imokennpi.009
+    2300022: Jagarigo
+    2300024: wakame_steck
+    2300026: wakame_steck.001
+    2300028: wakame_steck.002
+    2300030: wakame_steck.003
+    2300032: wakame_steck.004
+    2300034: wakame_steck.005
+    2300036: wakame_steck.006
+    2300038: wakame_steck.007
+    2300040: wakame_steck.008
+    2300042: wakame_steck.009
+    3300000: Huta
+    3300002: imokennpi
+    3300004: imokennpi.001
+    3300006: imokennpi.002
+    3300008: imokennpi.003
+    3300010: imokennpi.004
+    3300012: imokennpi.005
+    3300014: imokennpi.006
+    3300016: imokennpi.007
+    3300018: imokennpi.008
+    3300020: imokennpi.009
+    3300022: Jagarigo
+    3300024: wakame_steck
+    3300026: wakame_steck.001
+    3300028: wakame_steck.002
+    3300030: wakame_steck.003
+    3300032: wakame_steck.004
+    3300034: wakame_steck.005
+    3300036: wakame_steck.006
+    3300038: wakame_steck.007
+    3300040: wakame_steck.008
+    3300042: wakame_steck.009
+    4300000: wakame_steck.009
+    4300002: wakame_steck.008
+    4300004: imokennpi.009
+    4300006: imokennpi.008
+    4300008: imokennpi.007
+    4300010: wakame_steck.007
+    4300012: wakame_steck.006
+    4300014: wakame_steck.005
+    4300016: wakame_steck.004
+    4300018: wakame_steck.003
+    4300020: imokennpi.006
+    4300022: imokennpi.005
+    4300024: imokennpi.004
+    4300026: imokennpi.003
+    4300028: imokennpi.002
+    4300030: imokennpi.001
+    4300032: wakame_steck.001
+    4300034: wakame_steck.002
+    4300036: imokennpi
+    4300038: Huta
+    4300040: wakame_steck
+    4300042: Jagarigo
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Jagarico
+    second: {fileID: 2100000, guid: ccd73b24639bc1644a4350a7ad7765af, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: stick
+    second: {fileID: 2100000, guid: 2ba7cfb7153bb5d48919d80915657054, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
