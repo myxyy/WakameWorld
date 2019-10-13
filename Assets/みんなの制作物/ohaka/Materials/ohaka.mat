@@ -7,8 +7,9 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: ohaka
-  m_Shader: {fileID: 4800000, guid: d34ddb690407bf04c8c9788205512415, type: 3}
-  m_ShaderKeywords: 
+  m_Shader: {fileID: 4800000, guid: 9566a373fffe627408d31026ce69389d, type: 3}
+  m_ShaderKeywords: DOUBLE_SIDED USE_REFLECTION_PROBE USE_VERTEX_LIGHT _LIGHTSAMPLING_ARKTOON
+    _MATCAPBLENDMODE_UNUSED _SHADOWCAPBLENDMODE_UNUSED _SHADOWCASTERCULLING_NONE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -223,7 +224,7 @@ Material:
     - _UseReflectionProbe: 1
     - _UseRim: 0
     - _UseVertexLight: 1
-    - _Version: 1024
+    - _Version: 1025
     - _VertexColorBlendDiffuse: 0
     - _VertexColorBlendEmissive: 0
     - _ZWrite: 1
