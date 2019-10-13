@@ -7,9 +7,10 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: ramen_yatai
-  m_Shader: {fileID: 4800000, guid: d34ddb690407bf04c8c9788205512415, type: 3}
-  m_ShaderKeywords: USE_GLOSS USE_OUTLINE USE_REFLECTION_PROBE USE_VERTEX_LIGHT _LIGHTSAMPLING_ARKTOON
-    _MATCAPBLENDMODE_UNUSED _SHADOWCAPBLENDMODE_UNUSED _SHADOWCASTERCULLING_BACK
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: USE_GLOSS USE_OUTLINE USE_REFLECTION_PROBE USE_VERTEX_LIGHT _GLOSSYREFLECTIONS_OFF
+    _LIGHTSAMPLING_ARKTOON _MATCAPBLENDMODE_UNUSED _SHADOWCAPBLENDMODE_UNUSED _SHADOWCASTERCULLING_BACK
+    _SPECULARHIGHLIGHTS_OFF
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -145,8 +146,8 @@ Material:
     - _GlossBlend: 0.536
     - _GlossMapScale: 1
     - _GlossPower: 0.079
-    - _Glossiness: 0.5
-    - _GlossyReflections: 1
+    - _Glossiness: 0
+    - _GlossyReflections: 0
     - _LightSampling: 0
     - _MatcapBlend: 1
     - _MatcapBlendMode: 3
@@ -204,7 +205,7 @@ Material:
     - _Shadowborder: 0.931
     - _ShadowborderBlur: 0.352
     - _SmoothnessTextureChannel: 0
-    - _SpecularHighlights: 1
+    - _SpecularHighlights: 0
     - _SrcBlend: 1
     - _UVSec: 0
     - _UseDoubleSided: 0

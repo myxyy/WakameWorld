@@ -14103,6 +14103,7 @@ Transform:
   - {fileID: 1437193828}
   - {fileID: 1212110984}
   - {fileID: 1388987931}
+  - {fileID: 1555870271}
   m_Father: {fileID: 1649862321}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -32888,7 +32889,7 @@ Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1523148961}
+    m_TransformParent: {fileID: 198825363}
     m_Modifications:
     - target: {fileID: 400000, guid: 97f3309c96943b6478524c8b355f71df, type: 3}
       propertyPath: m_LocalPosition.x
@@ -32920,11 +32921,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 97f3309c96943b6478524c8b355f71df, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 97f3309c96943b6478524c8b355f71df, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.20000005
+      value: 0.2000001
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 97f3309c96943b6478524c8b355f71df, type: 3}
       propertyPath: m_LocalScale.y
@@ -32932,7 +32933,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 97f3309c96943b6478524c8b355f71df, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.20000005
+      value: 0.2000001
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 97f3309c96943b6478524c8b355f71df, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -32944,23 +32945,23 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100004, guid: 97f3309c96943b6478524c8b355f71df, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 84
+      value: 85
       objectReference: {fileID: 0}
     - target: {fileID: 100008, guid: 97f3309c96943b6478524c8b355f71df, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 84
+      value: 85
       objectReference: {fileID: 0}
     - target: {fileID: 100006, guid: 97f3309c96943b6478524c8b355f71df, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 84
+      value: 85
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 97f3309c96943b6478524c8b355f71df, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 84
+      value: 85
       objectReference: {fileID: 0}
     - target: {fileID: 100002, guid: 97f3309c96943b6478524c8b355f71df, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 84
+      value: 85
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9500000, guid: 97f3309c96943b6478524c8b355f71df, type: 3}
@@ -62733,7 +62734,7 @@ Prefab:
     - target: {fileID: 114115535249682816, guid: 9cb1e183d39ba432db5c583c4548819c,
         type: 2}
       propertyPath: blueprintId
-      value: wrld_c72343d8-6b34-42e8-b4e4-d2d60b2bfb02
+      value: wrld_66f6d7cc-b4a9-4fc0-a113-dac2898916d7
       objectReference: {fileID: 0}
     - target: {fileID: 114115535249682816, guid: 9cb1e183d39ba432db5c583c4548819c,
         type: 2}
@@ -70703,7 +70704,6 @@ Transform:
   m_Children:
   - {fileID: 648677375}
   - {fileID: 719417758}
-  - {fileID: 1555870271}
   - {fileID: 78328440}
   - {fileID: 369783150}
   m_Father: {fileID: 1649862321}
@@ -75031,7 +75031,6 @@ MonoBehaviour:
   m_Script: {fileID: 1125178822, guid: f78c4655b33cb5741983dc02e08899cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  disableSpatialization: 0
   Gain: 10
   Far: 80
   Near: 0
