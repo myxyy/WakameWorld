@@ -60510,7 +60510,7 @@ Prefab:
     - target: {fileID: 114115535249682816, guid: 9cb1e183d39ba432db5c583c4548819c,
         type: 2}
       propertyPath: blueprintId
-      value: wrld_66f6d7cc-b4a9-4fc0-a113-dac2898916d7
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 114115535249682816, guid: 9cb1e183d39ba432db5c583c4548819c,
         type: 2}
@@ -65560,7 +65560,7 @@ Prefab:
     - target: {fileID: 114115535249682816, guid: 9cb1e183d39ba432db5c583c4548819c,
         type: 2}
       propertyPath: completedSDKPipeline
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114409779611674446, guid: 9cb1e183d39ba432db5c583c4548819c,
         type: 2}
