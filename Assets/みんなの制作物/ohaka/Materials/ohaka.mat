@@ -6,10 +6,10 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: ramen_hasi
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: USE_REFLECTION_PROBE USE_VERTEX_LIGHT _GLOSSYREFLECTIONS_OFF _LIGHTSAMPLING_ARKTOON
-    _MATCAPBLENDMODE_UNUSED _SHADOWCAPBLENDMODE_UNUSED _SHADOWCASTERCULLING_BACK _SPECULARHIGHLIGHTS_OFF
+  m_Name: ohaka
+  m_Shader: {fileID: 4800000, guid: 9566a373fffe627408d31026ce69389d, type: 3}
+  m_ShaderKeywords: DOUBLE_SIDED USE_REFLECTION_PROBE USE_VERTEX_LIGHT _LIGHTSAMPLING_ARKTOON
+    _MATCAPBLENDMODE_UNUSED _SHADOWCAPBLENDMODE_UNUSED _SHADOWCASTERCULLING_NONE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -56,7 +56,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: db89b3780cd3a1d409d55bf615a37673, type: 3}
+        m_Texture: {fileID: 2800000, guid: 65d38d5adc22b7d4fb1a3d5ff0a2c0f4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MatcapBlendMask:
@@ -76,6 +76,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OutlineMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OutlineTexture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -137,7 +141,11 @@ Material:
     - _Cutoff: 0.5
     - _CutoutCutoutAdjust: 0.5
     - _DetailNormalMapScale: 1
+    - _DoubleSidedBackfaceHueShiftFromBase: 0
     - _DoubleSidedBackfaceLightIntensity: 0.5
+    - _DoubleSidedBackfaceSaturationFromBase: 1
+    - _DoubleSidedBackfaceUseColorShift: 0
+    - _DoubleSidedBackfaceValueFromBase: 1
     - _DoubleSidedFlipBackfaceNormal: 0
     - _DstBlend: 0
     - _EmissionParallaxDepth: 0
@@ -146,7 +154,7 @@ Material:
     - _GlossMapScale: 1
     - _GlossPower: 0.5
     - _Glossiness: 0
-    - _GlossyReflections: 0
+    - _GlossyReflections: 1
     - _LightSampling: 0
     - _MatcapBlend: 1
     - _MatcapBlendMode: 3
@@ -184,7 +192,7 @@ Material:
     - _ShadowCapBlend: 1
     - _ShadowCapBlendMode: 3
     - _ShadowCapNormalMix: 1
-    - _ShadowCasterCulling: 2
+    - _ShadowCasterCulling: 0
     - _ShadowIndirectIntensity: 0.25
     - _ShadowPlanB2HueShiftFromBase: 0
     - _ShadowPlanB2SaturationFromBase: 1
@@ -204,10 +212,10 @@ Material:
     - _Shadowborder: 0.6
     - _ShadowborderBlur: 0.05
     - _SmoothnessTextureChannel: 0
-    - _SpecularHighlights: 0
+    - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
-    - _UseDoubleSided: 0
+    - _UseDoubleSided: 1
     - _UseEmissionParallax: 0
     - _UseGloss: 0
     - _UseOutline: 0
@@ -216,11 +224,12 @@ Material:
     - _UseReflectionProbe: 1
     - _UseRim: 0
     - _UseVertexLight: 1
+    - _Version: 1025
     - _VertexColorBlendDiffuse: 0
     - _VertexColorBlendEmissive: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionParallaxColor: {r: 1, g: 1, b: 1, a: 1}
     - _GlossColor: {r: 1, g: 1, b: 1, a: 1}
