@@ -48,7 +48,7 @@ ModelImporter:
     importCameras: 1
     importLights: 1
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
@@ -57,8 +57,8 @@ ModelImporter:
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15
-    secondaryUVHardAngle: 180
-    secondaryUVPackMargin: 4
+    secondaryUVHardAngle: 60
+    secondaryUVPackMargin: 48
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
