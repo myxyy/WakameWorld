@@ -40854,7 +40854,7 @@ GameObject:
   - component: {fileID: 819066848}
   - component: {fileID: 819066847}
   m_Layer: 0
-  m_Name: vcolle
+  m_Name: erai
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40868,16 +40868,16 @@ RectTransform:
   m_GameObject: {fileID: 819066845}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9544419, y: 0.95444006, z: 0}
+  m_LocalScale: {x: 1.1, y: 1.1, z: 0}
   m_Children: []
   m_Father: {fileID: 1428742877}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.89, y: 0.442}
+  m_AnchoredPosition: {x: 0.132, y: 0.848}
   m_SizeDelta: {x: 1, y: 1}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &819066847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40897,7 +40897,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 069b5ce70aa52e44fa29a4efd569a49a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a5fb2ba687e294c4581e6d60e628fc7f, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
