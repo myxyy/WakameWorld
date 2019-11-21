@@ -8,7 +8,7 @@
 		_AmbientColor("AmbientColor", Color) = (1,0,0,1)
 	}
 	SubShader {
-		Tags { "Queue"="AlphaTest+500"}
+		Tags { "Queue"="AlphaTest+500" "LightMode"="ForwardBase"}
 		LOD 200
 
 		//Blend SrcAlpha OneMinusSrcAlpha
