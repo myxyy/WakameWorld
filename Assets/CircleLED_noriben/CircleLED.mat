@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: CircleLED
+  m_Shader: {fileID: 4800000, guid: 5f94a00059794d8469e1ec8b94e48a09, type: 3}
+  m_ShaderKeywords: _RAINBOW_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Floats:
+    - _Cutoff: 0.5
+    - _Divide: 53.4
+    - _Noise: 2.17
+    - _Rainbow: 1
+    - _SizeX: 0.206
+    - _SizeY: 0.203
+    - _Speed: 0.462
+    - _StepMax: 0.8780502
+    - _StepMin: 0.99
+    - _Thickness: 0.034
+    - _node_9628: -3
+    m_Colors:
+    - _MainColor: {r: 0.99999994, g: 0.99999994, b: 0.99999994, a: 1}
