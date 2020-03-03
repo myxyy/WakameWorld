@@ -112,7 +112,7 @@
 						break;
 					}
 				}
-				s -= monthDays[d.month - 1];
+				s -= monthDays[d.month - 1] + (d.month > 2 && isLeapYear(d.year) ? 1 : 0);
 				d.day = s + 1;
 				return d;
 			}
