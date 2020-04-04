@@ -157,7 +157,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4670470428734742}
   m_Layer: 0
-  m_Name: iwaSyncVideo_v2.2s
+  m_Name: iwaSyncVideo_v2.3a
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -190,6 +190,8 @@ GameObject:
   - component: {fileID: 4719807334409072}
   - component: {fileID: 114446253602439894}
   - component: {fileID: 114636684259235666}
+  - component: {fileID: 114402565841747182}
+  - component: {fileID: 114024075722968378}
   m_Layer: 0
   m_Name: CustomTrigger
   m_TagString: Untagged
@@ -3237,8 +3239,7 @@ AudioSource:
   m_GameObject: {fileID: 1861200346321096}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300001, guid: 1dd706bb85d8aef4e83a6229dbd62c36,
-    type: 2}
+  OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 0.184
@@ -3330,8 +3331,7 @@ AudioSource:
   m_GameObject: {fileID: 1619707999336662}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300001, guid: 1dd706bb85d8aef4e83a6229dbd62c36,
-    type: 2}
+  OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 0.184
@@ -3779,6 +3779,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114024075722968378
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1045150067268120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1961726162, guid: f78c4655b33cb5741983dc02e08899cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectPrefab: {fileID: 1589575067097464}
 --- !u!114 &114029251322480304
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3884,9 +3896,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Events: []
-  CombinedNetworkId: -1
-  _dispatcher: {fileID: 0}
-  _registered: 0
 --- !u!114 &114064684442922016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4895,9 +4904,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Events: []
-  CombinedNetworkId: -1
-  _dispatcher: {fileID: 0}
-  _registered: 0
 --- !u!114 &114283965828873836
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5424,7 +5430,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: iwaSyncVideo_v2.2s
+  m_Text: iwaSyncVideo_v2.3a
 --- !u!114 &114357841244132982
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5469,13 +5475,14 @@ MonoBehaviour:
   m_Script: {fileID: 394927577, guid: f78c4655b33cb5741983dc02e08899cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MomentumTransferMethod: 0
   DisallowTheft: 0
-  physicalRoot: {fileID: 0}
   ExactGun: {fileID: 0}
   ExactGrip: {fileID: 0}
   allowManipulationWhenEquipped: 0
   orientation: 0
   AutoHold: 0
+  InteractionText: 
   UseText: Use
   useEventBroadcastType: 0
   UseDownEventName: 
@@ -5489,10 +5496,6 @@ MonoBehaviour:
   currentLocalPlayer: {fileID: 0}
   pickupable: 0
   proximity: 2
-  originalKinematic: 0
-  originalGravity: 1
-  originalTrigger: 0
-  originalParent: {fileID: 0}
 --- !u!114 &114364665933181424
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5855,6 +5858,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Live
+--- !u!114 &114402565841747182
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1045150067268120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1961726162, guid: f78c4655b33cb5741983dc02e08899cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectPrefab: {fileID: 1262865558348332}
 --- !u!114 &114418900722865532
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6056,9 +6071,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Events: []
-  CombinedNetworkId: -1
-  _dispatcher: {fileID: 0}
-  _registered: 0
 --- !u!114 &114449218844510968
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6188,9 +6200,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Events: []
-  CombinedNetworkId: -1
-  _dispatcher: {fileID: 0}
-  _registered: 0
 --- !u!114 &114482167804540734
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6359,9 +6368,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Events: []
-  CombinedNetworkId: -1
-  _dispatcher: {fileID: 0}
-  _registered: 0
 --- !u!114 &114517006290732162
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6413,6 +6419,7 @@ MonoBehaviour:
   isHidden: 0
   UsesAdvancedOptions: 1
   ShowHelp: 1
+  TakesOwnershipIfNecessary: 0
   Triggers:
   - TriggerType: 0
     BroadcastType: 4
@@ -6428,6 +6435,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1580643657607640}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: Pause
     Others: []
     Key: 0
@@ -6468,6 +6476,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1179702370302778}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: Play
     Others: []
     Key: 0
@@ -6508,6 +6517,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1589575067097464}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     - Name: 
       EventType: 14
       ParameterString: Clear
@@ -6519,6 +6529,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1462260177051172}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     - Name: 
       EventType: 14
       ParameterString: Stop
@@ -6530,6 +6541,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1462260177051172}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     - Name: 
       EventType: 21
       ParameterString: UnityEngine.Animation
@@ -6541,6 +6553,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1158456196297768}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: Load
     Others: []
     Key: 0
@@ -6593,6 +6606,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1462260177051172}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     - Name: Next
       EventType: 21
       ParameterString: UnityEngine.Animation
@@ -6604,6 +6618,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1002329813167146}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: Start
     Others: []
     Key: 0
@@ -6648,6 +6663,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1462260177051172}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: DelayStart
     Others: []
     Key: 0
@@ -6688,6 +6704,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1462260177051172}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: Stop
     Others: []
     Key: 0
@@ -6728,6 +6745,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1589575067097464}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: Reap
     Others: []
     Key: 0
@@ -6768,6 +6786,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1445132430934442}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     - Name: 
       EventType: 10
       ParameterString: 
@@ -6779,6 +6798,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1223069628921970}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: ActiveTime
     Others: []
     Key: 0
@@ -6823,6 +6843,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1788611583945860}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: ActivePause
     Others: []
     Key: 0
@@ -6863,6 +6884,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1677611829891824}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: ActivePlay
     Others: []
     Key: 0
@@ -7035,6 +7057,7 @@ MonoBehaviour:
   isHidden: 0
   UsesAdvancedOptions: 1
   ShowHelp: 1
+  TakesOwnershipIfNecessary: 0
   Triggers:
   - TriggerType: 0
     BroadcastType: 4
@@ -7050,6 +7073,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1948072256536258}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: Pause
     Others: []
     Key: 0
@@ -7090,6 +7114,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1262865558348332}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     - Name: 
       EventType: 14
       ParameterString: Clear
@@ -7101,6 +7126,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1948072256536258}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     - Name: 
       EventType: 14
       ParameterString: Stop
@@ -7112,6 +7138,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1948072256536258}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     - Name: Set Max Quality
       EventType: 14
       ParameterString: SetMaxQuality
@@ -7123,6 +7150,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1948072256536258}
       ParameterBytes: 0001000000ffffffff0100000000000000100100000001000000080b000034440b
+      TakeOwnershipOfTarget: 0
     - Name: 
       EventType: 21
       ParameterString: UnityEngine.Animation
@@ -7134,6 +7162,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1582595277986570}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: Load
     Others: []
     Key: 0
@@ -7190,6 +7219,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1948072256536258}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     - Name: Next
       EventType: 21
       ParameterString: UnityEngine.Animation
@@ -7201,6 +7231,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1861945700979878}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: Start
     Others: []
     Key: 0
@@ -7245,6 +7276,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1948072256536258}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     - Name: Set Sync Type
       EventType: 14
       ParameterString: SetSyncType
@@ -7256,6 +7288,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1948072256536258}
       ParameterBytes: 0001000000ffffffff010000000000000010010000000100000009020000000c030000000756524353444b3205020000002956524353444b322e5652435f53796e63566964656f53747265616d2b566964656f53796e6354797065010000000776616c75655f5f000803000000010000000b
+      TakeOwnershipOfTarget: 0
     - Name: Next
       EventType: 14
       ParameterString: Resync
@@ -7267,6 +7300,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1948072256536258}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: DelayStart
     Others: []
     Key: 0
@@ -7315,6 +7349,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1262865558348332}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: Reap
     Others: []
     Key: 0
@@ -7355,6 +7390,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1948072256536258}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: LocalResync
     Others: []
     Key: 0
@@ -7395,6 +7431,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1156443003512940}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     - Name: 
       EventType: 10
       ParameterString: 
@@ -7406,6 +7443,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1167271026427432}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: ActiveTime
     Others: []
     Key: 0
@@ -7450,6 +7488,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1056360197776028}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: ActivePause
     Others: []
     Key: 0
@@ -7490,6 +7529,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1240601351532678}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: ActivePlay
     Others: []
     Key: 0
@@ -7534,6 +7574,7 @@ MonoBehaviour:
   isHidden: 0
   UsesAdvancedOptions: 1
   ShowHelp: 1
+  TakesOwnershipIfNecessary: 0
   Triggers:
   - TriggerType: 4
     BroadcastType: 2
@@ -7549,6 +7590,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1262865558348332}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: Unnamed
     Others: []
     Key: 0
@@ -8053,6 +8095,7 @@ MonoBehaviour:
   isHidden: 0
   UsesAdvancedOptions: 1
   ShowHelp: 1
+  TakesOwnershipIfNecessary: 0
   Triggers:
   - TriggerType: 0
     BroadcastType: 0
@@ -8068,6 +8111,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1924529132701744}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: SpawnVideo
     Others: []
     Key: 0
@@ -8108,6 +8152,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1924529132701744}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: SpawnStream
     Others: []
     Key: 0
@@ -8148,6 +8193,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1869262426002886}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: ActiveLabel
     Others: []
     Key: 0
@@ -8188,6 +8234,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1869262426002886}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: InactiveLabel
     Others: []
     Key: 0
@@ -8638,13 +8685,14 @@ MonoBehaviour:
   m_Script: {fileID: 394927577, guid: f78c4655b33cb5741983dc02e08899cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MomentumTransferMethod: 0
   DisallowTheft: 0
-  physicalRoot: {fileID: 0}
   ExactGun: {fileID: 0}
   ExactGrip: {fileID: 0}
   allowManipulationWhenEquipped: 0
   orientation: 0
   AutoHold: 0
+  InteractionText: 
   UseText: Use
   useEventBroadcastType: 0
   UseDownEventName: 
@@ -8658,10 +8706,6 @@ MonoBehaviour:
   currentLocalPlayer: {fileID: 0}
   pickupable: 0
   proximity: 2
-  originalKinematic: 0
-  originalGravity: 1
-  originalTrigger: 0
-  originalParent: {fileID: 0}
 --- !u!114 &114726411525394890
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -10234,6 +10278,7 @@ MonoBehaviour:
   isHidden: 0
   UsesAdvancedOptions: 1
   ShowHelp: 1
+  TakesOwnershipIfNecessary: 0
   Triggers:
   - TriggerType: 4
     BroadcastType: 2
@@ -10249,6 +10294,7 @@ MonoBehaviour:
       ParameterObjects:
       - {fileID: 1589575067097464}
       ParameterBytes: 
+      TakeOwnershipOfTarget: 0
     Name: Unnamed
     Others: []
     Key: 0
