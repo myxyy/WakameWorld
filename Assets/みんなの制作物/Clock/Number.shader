@@ -169,7 +169,7 @@
 
 				uint weeks = utime / (60 * 60 * 24 * 7) - _offset;
 
-				o.d = (weeks / (uint)pow(10., _s));
+				o.d = (weeks / (uint)(pow(10., _s) + .5));
 				o.d = o.d > 0 ? o.d % 10 : 10;
 
 				/*
