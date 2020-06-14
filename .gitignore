@@ -64,3 +64,7 @@ crashlytics-build.properties
 [Aa]ssets/Udon.meta
 [Aa]ssets/SerializedUdonPrograms
 [Aa]ssets/SerializedUdonPrograms.meta
+[Aa]ssets/UdonSharp
+[Aa]ssets/UdonSharp.meta
+[Aa]ssets/Gizmos/UdonSharp
+[Aa]ssets/Gizmos/UdonSharp.meta
