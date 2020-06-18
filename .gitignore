@@ -68,3 +68,6 @@ crashlytics-build.properties
 [Aa]ssets/UdonSharp.meta
 [Aa]ssets/Gizmos/UdonSharp
 [Aa]ssets/Gizmos/UdonSharp.meta
+
+# Visual Studio Code
+.vscode
