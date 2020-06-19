@@ -27,7 +27,9 @@
 			#include "UnityCG.cginc"
 
 			sampler2D _GrabTex;
+			float4 _GrabTex_TexelSize;
 			sampler2D _CameraDepthTexture;
+			float4 _CameraDepthTexture_TexelSize;
 			float4 _GrabTex_ST;
 
 			struct appdata {
@@ -152,10 +154,13 @@
 				c.rgb += (float3)specPower*_SunColor;
 
 				float4 grabUV = i.grabPos;
-				float truedepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, UNITY_PROJ_COORD(grabUV)));
-				grabUV.xy = (i.grabPos + _Distortion * normal.xz);
 
-				float depth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, UNITY_PROJ_COORD(grabUV)));
+				float4 depth4cd = UNITY_PROJ_COORD(i.scrPos);
+				float truedepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, depth4cd));
+				grabUV.xy = (i.grabPos + _Distortion * normal.xz);
+				depth4cd.xy += (_Distortion * normal.xz);
+
+				float depth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, depth4cd));
 				float surfDepth = UNITY_Z_0_FAR_FROM_CLIPSPACE(i.scrPos.z);
 				float depthDiff = depth - surfDepth;
 				float truedepthDiff = truedepth - surfDepth;

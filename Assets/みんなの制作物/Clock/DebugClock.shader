@@ -1,4 +1,4 @@
-﻿Shader "Unlit/DebugClock"
+﻿Shader "myxy/YClock"
 {
 	Properties
 	{
