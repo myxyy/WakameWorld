@@ -10,9 +10,12 @@ public class SetGameObjectOnEnterTrigger : UdonSharpBehaviour
     [SerializeField] private GameObject[] disableOnEnterTrigger;
     void OnTriggerEnter(Collider collider)
     {
-        if(collider.gameObject.layer == 22)
+        if (collider != null)
         {
-            SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, "ExecuteOnPickupUseDown");
+            if (collider?.gameObject.layer == 22)
+            {
+                SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, "ExecuteOnPickupUseDown");
+            }
         }
     }
     public void ExecuteOnPickupUseDown()
