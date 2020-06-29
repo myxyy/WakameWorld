@@ -14,8 +14,8 @@ public class PlayAudioSourceOnEnterTrigger : UdonSharpBehaviour
     }
     void OnTriggerEnter(Collider collider)
     {
-        this.gameObject.transform.Rotate(0.0f,30.0f,0.0f, Space.World);
-        Debug.Log("Collision");
+        //this.gameObject.transform.Rotate(0.0f,30.0f,0.0f, Space.World);
+        //Debug.Log("Collision");
         if (collider != null)
         {
             if (collider.gameObject.layer == 13)
