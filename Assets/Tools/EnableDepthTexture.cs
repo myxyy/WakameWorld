@@ -2,8 +2,9 @@
 [ExecuteInEditMode]
 public class EnableDepthTexture : MonoBehaviour
 {
-    void OnEnable()
+    void OnRenderObject()
     {
         Camera.main.depthTextureMode = DepthTextureMode.Depth;
+        this.GetComponent<Camera>().depthTextureMode = DepthTextureMode.Depth;
     }
 }
