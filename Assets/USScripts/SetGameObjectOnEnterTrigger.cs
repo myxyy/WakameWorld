@@ -12,7 +12,7 @@ public class SetGameObjectOnEnterTrigger : UdonSharpBehaviour
     {
         if (collider != null)
         {
-            if (collider?.gameObject.layer == 22)
+            if (collider.gameObject.layer == 22)
             {
                 SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, "ExecuteOnPickupUseDown");
             }
