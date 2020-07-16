@@ -1,10 +1,13 @@
 ﻿using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 public class VRCCamManager : MonoBehaviour
 {
     [SerializeField]
     private float clippingFar = 1000.0f;
+    [SerializeField]
+    private bool doesVRCCamTrackSceneCam = true;
     private Scene scene;
     private Camera vrcCam;
     void OnRenderObject()
@@ -21,6 +24,18 @@ public class VRCCamManager : MonoBehaviour
         {
             vrcCam.depthTextureMode = DepthTextureMode.Depth;
             vrcCam.farClipPlane = clippingFar;
+            #if UNITY_EDITOR
+            if (
+                Camera.current != null &&
+                EditorWindow.focusedWindow != null &&
+                EditorWindow.focusedWindow.titleContent.text == "Scene" &&
+                doesVRCCamTrackSceneCam
+            )
+            {
+                vrcCam.transform.position = Camera.current.transform.position;
+                vrcCam.transform.rotation = Camera.current.transform.rotation;
+            }
+            #endif
         }
     }
 }
