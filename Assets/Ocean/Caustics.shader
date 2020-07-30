@@ -1,4 +1,7 @@
-﻿Shader "WakameIsland/Caustics"
+﻿// Caustics code from https://www.shadertoy.com/view/MdKXDm
+// Remixed by myxy
+// License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License
+Shader "WakameIsland/Caustics"
 {
     Properties
     {
@@ -71,7 +74,6 @@
                 return o;
             }
 
-            // From https://www.shadertoy.com/view/MdKXDm
             float caustics(float2 p, float t)
             {
                 float3 k = float3(p,t);
