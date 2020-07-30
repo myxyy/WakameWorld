@@ -48,6 +48,18 @@
                 return frac(sin(dot(p,float2(32.52554,45.5634)))*12432.23553);
             }
 
+            float n12(float2 p)
+            {
+                float2 i = floor(p);
+                float2 f = frac(p);
+                f *= f * (3 - 2*f);
+                return lerp(
+                    lerp(h12(i+float2(0,0)),h12(i+float2(1,0)),f.x),
+                    lerp(h12(i+float2(0,1)),h12(i+float2(1,1)),f.x),
+                    f.y
+                );
+            }
+
             v2f vert (appdata_full v)
             {
                 v2f o;
@@ -65,12 +77,13 @@
                 float3 k = float3(p,t);
                 float l;
                 float3x3 m = float3x3(-2,-1,2,3,-2,1,1,2,2);
+                float n = n12(p);
                 k = mul(m, k) * .5;
-                l = length(.5 - frac(k));
+                l = length(.5 - frac(k+n));
                 k = mul(m, k) * .4;
-                l = min(l, length(.5 - frac(k)));
+                l = min(l, length(.5 - frac(k+n)));
                 k = mul(m, k) * .3;
-                l = min(l, length(.5 - frac(k)));
+                l = min(l, length(.5 - frac(k+n)));
                 return pow(l,_p2)*_p1;
             }
 
