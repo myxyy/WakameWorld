@@ -11,9 +11,10 @@
     }
     SubShader
     {
-        Tags { "RenderType"="Transparent+100" }
+        Tags { "Queue"="AlphaTest+600" }
         LOD 100
-        ZTEST Always
+        ZTest Always
+        ZWrite Off
 
 		GrabPass {
 			"_GrabTex_UnderWater"
