@@ -5,8 +5,8 @@
 	}
 	SubShader{
 		Tags{
-			"RenderType" = "Transparent"
-			"Queue" = "Transparent"
+			"RenderType" = "Geometry"
+			"Queue" = "Geometry"
 			"LightMode" = "ForwardBase"
 		}
 		Pass{

@@ -13,6 +13,7 @@
 
 		//Blend SrcAlpha OneMinusSrcAlpha
 		//ZTest Always
+		Cull Off
 
 		GrabPass {
 			"_GrabTex"
@@ -34,6 +35,7 @@
 
 			struct appdata {
 				float4 vertex : POSITION;
+				float3 normal : NORMAL;
 			};
 
 			struct v2f {
@@ -41,6 +43,7 @@
 				float3 wPos : WORLD_POS;
 				float4 grabPos : TEXCOORD0;
 				float4 scrPos : TEXCOORD1;
+				float3 normal : TEXCOORD2;
 			};
 
 			float3 random3(float3 p) {
@@ -129,6 +132,7 @@
 				o.pos = UnityObjectToClipPos(v.vertex);
 				o.wPos = mul(unity_ObjectToWorld, v.vertex);
 				o.grabPos = ComputeGrabScreenPos(o.pos);
+				o.normal = UnityObjectToWorldNormal(v.normal);
 				o.scrPos = ComputeScreenPos(o.pos);
 				return o;
 			}
@@ -139,15 +143,20 @@
 				float fBm_xzt = .5*fBm(float3(i.wPos.xz, _Time.y)) + .5;
 				float3 lightDir = normalize(_WorldSpaceLightPos0.xyz);
 				float3 viewDir = normalize(_WorldSpaceCameraPos - i.wPos);
+				float dotnv = dot(i.normal, viewDir);
+				if (dotnv < 0)
+				{
+					viewDir = viewDir - 2.*dotnv*i.normal;
+				}
 
 				c.rbg *= (float3)fBm_xzt;
 				float2 dheight = float2(
 					.5*fBm(float3(i.wPos.xz + float2(.001, 0), _Time.y)) + .5 - fBm_xzt,
 					.5*fBm(float3(i.wPos.xz + float2(0, .001), _Time.y)) + .5 - fBm_xzt
 				);
-				float3 normal = normalize(float3(-dheight.x, .001, -dheight.y));
+				float3 wnormal = normalize(float3(-dheight.x, .001, -dheight.y));
 
-				float3 ref = reflect(-lightDir, normal);
+				float3 ref = reflect(-lightDir, wnormal);
 				float refPower = dot(ref, viewDir);
 				float3 specPower = pow(max(0,refPower), _SpecPower);
 				//c.rgb += (float3)specPower*lerp(_AmbientColor, _SunColor, pow(max(0,refPower),_SpecPower*2.));
@@ -157,15 +166,19 @@
 
 				float4 depth4cd = UNITY_PROJ_COORD(i.scrPos);
 				float truedepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, depth4cd));
-				grabUV.xy = (i.grabPos + _Distortion * normal.xz);
-				depth4cd.xy += (_Distortion * normal.xz);
+				grabUV.xy = (i.grabPos + _Distortion * wnormal.xz);
+				depth4cd.xy += (_Distortion * wnormal.xz);
 
 				float depth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, depth4cd));
 				float surfDepth = UNITY_Z_0_FAR_FROM_CLIPSPACE(i.scrPos.z);
 				float depthDiff = depth - surfDepth;
 				float truedepthDiff = truedepth - surfDepth;
 				float transparency = 1 - saturate(1 / pow(_Opacity, depthDiff > 0 ? depthDiff : truedepthDiff));
-				//c.a = transparency;
+				if (dotnv < 0)
+				{
+					c.rgb = (float3)specPower*_SunColor*2.;
+					transparency = .1;
+				}
 
 				fixed4 grabCol = tex2D(_GrabTex, (depthDiff > 0 ? grabUV.xy : i.grabPos.xy)/grabUV.w);
 				c.rgb = c.rgb*transparency + grabCol * (1 - transparency);
