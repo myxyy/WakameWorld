@@ -88,6 +88,7 @@
                 col.rgb += _Color.rgb * min(depth*_Tr2, 1);
                 //return fixed4(viewDir, 1);
                 //return fixed4(fixed3(exp(-depth),test,0),1);
+                //return fixed4((fixed3)(exp(-depth*.1)),1);
                 return lerp(col, _SC, 1-exp(-depth*_Tr));
             }
             ENDCG
