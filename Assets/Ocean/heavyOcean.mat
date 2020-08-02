@@ -75,7 +75,7 @@ Material:
     - _Metallic: 1
     - _Mode: 3
     - _OcclusionStrength: 1
-    - _Opacity: 1.196
+    - _Opacity: 1.063
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecPower: 7.85
@@ -87,6 +87,6 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _AmbientColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.067686014, g: 0.12758934, b: 0.38900003, a: 1}
+    - _Color: {r: 0, g: 0.4190897, b: 0.8627451, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SunColor: {r: 1, g: 1, b: 1, a: 1}
