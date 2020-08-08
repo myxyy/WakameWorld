@@ -70,9 +70,16 @@
                 return o;
             }
 
+            #define tau (2.*acos(-1))
+
             fixed4 frag (v2f i) : SV_Target
             {
-                float3 wscp = _WorldSpaceCameraPos;
+				float3 wscp = _WorldSpaceCameraPos;
+                /*
+				#if defined(USING_STEREO_MATRICES)
+					wscp = (unity_StereoWorldSpaceCameraPos[0] + unity_StereoWorldSpaceCameraPos[1]) * .5;
+				#endif
+                */
                 if (wscp.y > _SL) clip(-1);
                 //float3 viewDir = UNITY_MATRIX_V._m20_m21_m22;
                 float3 viewDir = normalize(i.viewDir);
@@ -86,6 +93,9 @@
                 depth = depth > seaDist ? seaDist : depth;
                 col = grabCol;
                 col.rgb += _Color.rgb * min(depth*_Tr2, 1);
+                float viewDirLatitudeAngle = atan2(viewDir.y,length(viewDir.xz))/tau;
+                float viewDirLongitudeAngle = atan2(viewDir.z,viewDir.x)/tau;
+                //return fixed4(frac(12*viewDirLatitudeAngle), frac(12*viewDirLongitudeAngle), 0, 1);
                 //return fixed4(viewDir, 1);
                 //return fixed4(fixed3(exp(-depth),test,0),1);
                 //return fixed4((fixed3)(exp(-depth*.1)),1);
