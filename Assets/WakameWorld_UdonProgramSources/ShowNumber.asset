@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c333ccfdd0cbdbc4ca30cef2dd6e6b9b, type: 3}
   m_Name: ShowNumber
   m_EditorClassIdentifier: 
-  serializedUdonProgramAsset: {fileID: 11400000, guid: 89760c8980d4bbf4a8ab424a19440d3b,
+  serializedUdonProgramAsset: {fileID: 11400000, guid: 0cc99919ec4d0cb48b059ebe302dfc20,
     type: 2}
   udonAssembly: ".data_start\n\n    .export ninthParty\n    .export unnumberedParties\n\n
     \   __refl_const_intnl_udonTypeID: %SystemInt64, null\n    __refl_const_intnl_udonTypeName:

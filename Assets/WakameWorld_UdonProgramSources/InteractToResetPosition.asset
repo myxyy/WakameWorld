@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c333ccfdd0cbdbc4ca30cef2dd6e6b9b, type: 3}
   m_Name: InteractToResetPosition
   m_EditorClassIdentifier: 
-  serializedUdonProgramAsset: {fileID: 11400000, guid: d78bacc7bf4219143abdd24591a65368,
+  serializedUdonProgramAsset: {fileID: 11400000, guid: 16e470223a538e247a321a7b1a05aaa5,
     type: 2}
   udonAssembly: ".data_start\n\n    .export targetObject\n    .export defaultTransform\n
     \   .export masterOnly\n\n    __refl_const_intnl_udonTypeID: %SystemInt64, null\n

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c333ccfdd0cbdbc4ca30cef2dd6e6b9b, type: 3}
   m_Name: PickupUseToSetGameObject
   m_EditorClassIdentifier: 
-  serializedUdonProgramAsset: {fileID: 11400000, guid: 12657cda90a75b34dbd1d7502378c9fc,
+  serializedUdonProgramAsset: {fileID: 11400000, guid: 16329cbe46422224abb2ca4439ef0793,
     type: 2}
   udonAssembly: ".data_start\n\n    .export ActiveOnPickupUseDown\n    .export ActiveOnPickupUseUp\n\n
     \   __refl_const_intnl_udonTypeID: %SystemInt64, null\n    __refl_const_intnl_udonTypeName:
