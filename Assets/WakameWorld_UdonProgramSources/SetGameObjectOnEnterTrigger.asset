@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c333ccfdd0cbdbc4ca30cef2dd6e6b9b, type: 3}
   m_Name: SetGameObjectOnEnterTrigger
   m_EditorClassIdentifier: 
-  serializedUdonProgramAsset: {fileID: 11400000, guid: 9cde9322e683d40409d90c4089da1983,
+  serializedUdonProgramAsset: {fileID: 11400000, guid: 9c2f322313efc00488c273d818daa9a0,
     type: 2}
   udonAssembly: ".data_start\n\n    .export enableOnEnterTrigger\n    .export disableOnEnterTrigger\n\n
     \   __refl_const_intnl_udonTypeID: %SystemInt64, null\n    __refl_const_intnl_udonTypeName:
