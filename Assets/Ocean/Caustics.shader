@@ -40,10 +40,8 @@ Shader "WakameIsland/Caustics"
 
             struct v2f
             {
-                //float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
                 float4 wpos : TEXCOORD3;
-                //V2F_SHADOW_CASTER;
             };
 
             float h12(float2 p)
@@ -67,9 +65,6 @@ Shader "WakameIsland/Caustics"
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                //o.wpos = mul(unity_ObjectToWorld, v.vertex);
-                //o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                //TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
                 o.wpos = mul(unity_ObjectToWorld, v.vertex);
                 return o;
             }
@@ -91,12 +86,9 @@ Shader "WakameIsland/Caustics"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                //fixed4 col = tex2D(_MainTex, i.uv);
                 float3 fwpos = frac(i.wpos);
-                //if(fwpos.x < .1 || fwpos.z < .1) clip(-1);
                 if(h12(i.wpos.xz)*_p0 < caustics(i.wpos.xz*_ss, _Time.y*_ts)) clip(-1);
                 return 0;
-                //SHADOW_CASTER_FRAGMENT(i)
             }
             ENDCG
         }
