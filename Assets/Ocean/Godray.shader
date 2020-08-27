@@ -12,7 +12,7 @@
     }
     SubShader
     {
-        Tags { "Queue"="AlphaTest+800" }
+        Tags { "Queue"="AlphaTest+800" "LightMode"="ForwardBase" }
         LOD 100
         ZTest Always
         ZWrite Off
