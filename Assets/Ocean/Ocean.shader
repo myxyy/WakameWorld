@@ -23,6 +23,7 @@
 		_LD ("Manual light direction", Vector) = (0,1,0,0)
 		[MaterialToggle] _Manual_directional_light_color ("Manual directional light color", Float) = 0
 		_LC ("Manual light color", Color) = (1,1,1,1)
+		_Refract ("Refractive index", Range(1,8)) = 1.334
 		[Header(Scaling and Scroll)]
 		_Scale ("Scale(x,y,z,time)", Vector) = (1,1,1,1)
 		_Flow ("Flow vector, w=wave frequency scale", Vector) = (0,0,0,1)
@@ -86,6 +87,7 @@
 			float _Manual_directional_light_direction;
 			float _Manual_directional_light_color;
 			float _Blend_DLC_RP;
+			float _Refract;
 
 			struct appdata
 			{
@@ -436,7 +438,6 @@
 				#endif
 
 				float3 wnormal = normalize(cross(waveposx-wavepos0,waveposy-wavepos0));
-				wnormal = dotnv < 0 ? -wnormal : wnormal;
 
 				// Calculate UV for grabtexture and cameradepthtexture
 
@@ -476,7 +477,6 @@
 				{
 					lightDir = normalize(_WorldSpaceLightPos0.xyz);
 				}
-				lightDir = dotnv < 0 ? lightDir - 2 * normal * dot(normal, lightDir) : lightDir;
 
 				float3 lightColor;
 				if (_Manual_directional_light_color)
@@ -487,10 +487,10 @@
 				{
 					lightColor = _LightColor0.rgb;
 				}
-				fixed4 reflectionProbeColor = UNITY_SAMPLE_TEXCUBE_LOD(unity_SpecCube0, reflect(viewDir,dotnv < 0 ? -wnormal : wnormal), 0);
+				fixed4 reflectionProbeColor = UNITY_SAMPLE_TEXCUBE_LOD(unity_SpecCube0, dotnv < 0 ? refract(viewDir, -wnormal, 1/_Refract) : reflect(viewDir, wnormal), 0);
 				lightColor = lerp(lightColor, reflectionProbeColor, _Blend_DLC_RP);
 
-				float3 specular = pow(max(0,dot(reflect(-lightDir, wnormal),-viewDir)), _SpecPower);
+				float3 specular = pow(max(0,dot(dotnv < 0 ? refract(-lightDir, wnormal, _Refract) : reflect(-lightDir, wnormal),-viewDir)), _SpecPower);
 				float fresnel = pow(1-max(0,dot(lightDir,wnormal)),_FresnelPower);
 
 				fixed4 grabCol = tex2D(_GrabTex_myxy_Ocean, saturate((depthDiff > 0 ? grabUV.xy : i.grabPos.xy)/grabUV.w));

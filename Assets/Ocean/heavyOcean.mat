@@ -91,8 +91,9 @@ Material:
     - _Pa1: 5
     - _Parallax: 0.02
     - _Ref: 0.5
+    - _Refract: 1.33
     - _SmoothnessTextureChannel: 0
-    - _SpecInt: 2.15
+    - _SpecInt: 4
     - _SpecPower: 7.3
     - _SpecularHighlights: 1
     - _SrcBlend: 1
