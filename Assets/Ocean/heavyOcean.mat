@@ -64,25 +64,36 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _Blend_DLC_RP: 0.971
     - _BumpScale: 1
+    - _Cull: 0
     - _Cutoff: 0.5
     - _DF: 1
     - _DetailNormalMapScale: 1
     - _Distortion: 0.03
     - _DstBlend: 10
+    - _ENABLE_DOMAIN_WARPING: 0
+    - _FresnelInt: 0
+    - _FresnelPower: 5
     - _GlossMapScale: 1
     - _Glossiness: 1
     - _GlossyReflections: 1
     - _IsVD: 0
+    - _Loop: 5
+    - _MUD: 0.1
+    - _Manual_directional_light_color: 0
+    - _Manual_directional_light_direction: 0
     - _Metallic: 1
     - _Mode: 3
+    - _NoiseSpace: 0
     - _OcclusionStrength: 1
     - _Opacity: 1.063
     - _Pa1: 5
     - _Parallax: 0.02
     - _Ref: 0.5
     - _SmoothnessTextureChannel: 0
-    - _SpecPower: 7.85
+    - _SpecInt: 2.15
+    - _SpecPower: 7.3
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Test: 0.05
@@ -95,6 +106,10 @@ Material:
     - _AmbientColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0, g: 0.068825066, b: 0.14150941, a: 1}
     - _Color2: {r: 0, g: 0.04876633, b: 0.13207549, a: 1}
+    - _ColorShallow: {r: 0, g: 0.104050055, b: 0.4056604, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Flow: {r: 0, g: 0, b: 0, a: 1}
+    - _LC: {r: 1, g: 1, b: 1, a: 1}
+    - _LD: {r: 0, g: 1, b: 0, a: 0}
+    - _Scale: {r: 1, g: 1, b: 1, a: 1}
     - _SunColor: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
