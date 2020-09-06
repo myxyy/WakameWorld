@@ -451,7 +451,7 @@
 				float4 grabUV = i.grabPos;
 				float2 aspect = _ScreenParams.xy / min(_ScreenParams.x, _ScreenParams.y);
 				grabUV.xy += _Distortion * wnormalc.xy / aspect;
-				depth4cd.xy += _Distortion * wnormalc.xz / aspect;
+				depth4cd.xy += _Distortion * wnormalc.xy / aspect;
 
 				// Calculate transparency
 
