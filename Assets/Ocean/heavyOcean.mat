@@ -70,7 +70,7 @@ Material:
     - _Cutoff: 0.5
     - _DF: 1
     - _DetailNormalMapScale: 1
-    - _Distortion: 0.03
+    - _Distortion: 0.12
     - _DstBlend: 10
     - _ENABLE_DOMAIN_WARPING: 0
     - _FresnelInt: 0

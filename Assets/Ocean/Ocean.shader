@@ -1,4 +1,4 @@
-﻿Shader "myxy/WaterShader/Ocean" {
+﻿Shader "myxy/WaterShader/Water" {
 	Properties{
 		[Header(Color)]
 		_Color("Color deep", Color) = (0,0,1,1)
@@ -16,14 +16,15 @@
 		_SpecInt("Specular intensity", Range(0,4)) = 1
 		_FresnelPower("Diffuse power", Range(1,16)) = 5
 		_FresnelInt("Diffuse intensity", Range(0,1)) = .2
-		_Ref("Reflectance", Range(0,1)) = 0.5
+		_ReflectFace("Reflectance (face)", Range(0,1)) = 0.5
+		_ReflectBack("Reflectance (back)", Range(0,1)) = 0.5
+		_Refract ("Refractive index", Range(1,8)) = 1.334
 		_Blend_DLC_RP("Blend directional light color and reflection probe color", Range(0,1)) = 0.5
 		[Header(Manual direcional light)]
 		[MaterialToggle] _Manual_directional_light_direction ("Manual directional light direction", Float) = 0
 		_LD ("Manual light direction", Vector) = (0,1,0,0)
 		[MaterialToggle] _Manual_directional_light_color ("Manual directional light color", Float) = 0
 		_LC ("Manual light color", Color) = (1,1,1,1)
-		_Refract ("Refractive index", Range(1,8)) = 1.334
 		[Header(Scaling and Scroll)]
 		_Scale ("Scale(x,y,z,time)", Vector) = (1,1,1,1)
 		_Flow ("Flow vector, w=wave frequency scale", Vector) = (0,0,0,1)
@@ -69,7 +70,8 @@
 			float _Distortion;
 			fixed4 _Color;
 			fixed4 _ColorShallow;
-			float _Ref;
+			float _ReflectFace;
+			float _ReflectBack;
 			float _Pa1;
 			float _IsVD;
 			float _VD;
@@ -494,8 +496,8 @@
 				float fresnel = pow(1-max(0,dot(lightDir,wnormal)),_FresnelPower);
 
 				fixed4 grabCol = tex2D(_GrabTex_myxy_Ocean, saturate((depthDiff > 0 ? grabUV.xy : i.grabPos.xy)/grabUV.w));
-				c.rgb = lerp(grabCol * (dotnv < 0 ? 1 - _Ref : 1), lerp(_ColorShallow,c.rgb,pow(transparency,_Pa1)), dotnv < 0 ? 0 : transparency);
-				c.rgb += ((specular*_SpecInt+fresnel*_FresnelInt)*lightColor)*(dotnv < 0 ? 1-_Ref:_Ref);
+				c.rgb = lerp(grabCol * (dotnv < 0 ? _ReflectBack : 1), lerp(_ColorShallow,c.rgb,pow(transparency,_Pa1)), dotnv < 0 ? 0 : transparency);
+				c.rgb += ((specular*_SpecInt+fresnel*_FresnelInt)*lightColor)*(dotnv < 0 ? _ReflectBack:_ReflectFace);
 				UNITY_APPLY_FOG(i.fogCoord, col);
 
 				return c;
