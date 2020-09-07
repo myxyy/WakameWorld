@@ -1,22 +1,48 @@
-﻿Shader "WakameIsland/Ocean" {
+﻿Shader "myxy/WaterShader/Water" {
 	Properties{
-		_Color("Color", Color) = (1,1,1,1)
-		_Color2("Color2", Color) = (1,1,1,1)
+		[Header(Color)]
+		_Color("Color deep", Color) = (0,0,1,1)
+		_ColorShallow("Color shallow", Color) = (0.5,0.5,1,1)
 		_Pa1("Color gradient parameter", Range(0.1,10)) = 5
-		_SpecPower("Specular", Range(1,10)) = 10.0
 		_Opacity("Opacity", Range(1,2)) = 1.1
-		_Distortion("Distortion", Range(0,1)) = 0.1
+		[Header(Wave and Noise)]
+		[KeywordEnum(World, Object, UV, UVTorus)] _NoiseSpace ("Noise space", Float) = 0
 		_WH("Wave height", Range(0,2)) = 1
-		_Ref("Reflectance", Range(0,1)) = 0.5
+		_Distortion("Distortion", Range(0,1)) = 0.1
+		[Toggle(ENABLE_DOMAIN_WARPING)] _ENABLE_DOMAIN_WARPING ("Enable domain warping", Float) = 0
+		_DF ("Domain warping factor", Range(0,10)) = 1
+		[Header(Lighting)]
+		_SpecPower("Specular power", Range(1,128)) = 10.0
+		_SpecInt("Specular intensity", Range(0,4)) = 1
+		_FresnelPower("Diffuse power", Range(1,16)) = 5
+		_FresnelInt("Diffuse intensity", Range(0,1)) = .2
+		_ReflectFace("Reflectance (face)", Range(0,1)) = 0.5
+		_ReflectBack("Reflectance (back)", Range(0,1)) = 0.5
+		_Refract ("Refractive index", Range(1,8)) = 1.334
+		_Blend_DLC_RP("Blend directional light color and reflection probe color", Range(0,1)) = 0.5
+		[Header(Manual direcional light)]
+		[MaterialToggle] _Manual_directional_light_direction ("Manual directional light direction", Float) = 0
+		_LD ("Manual light direction", Vector) = (0,1,0,0)
+		[MaterialToggle] _Manual_directional_light_color ("Manual directional light color", Float) = 0
+		_LC ("Manual light color", Color) = (1,1,1,1)
+		[Header(Scaling and Scroll)]
+		_Scale ("Scale(x,y,z,time)", Vector) = (1,1,1,1)
+		_Flow ("Flow vector, w=wave frequency scale", Vector) = (0,0,0,1)
+		[Header(Virtual depth)]
 		[MaterialToggle] _IsVD("Enable virtual depth", Float) = 0
 		_VD ("Virtual depth", Float) = 0.5
-		_Flow ("Flow vector, w=wave frequency scale", Vector) = (0,0,0,1)
-		_DF ("Domain warping factor", Range(0,10)) = 1
+		[Header(Other)]
+		_MUD ("Pseudo mipmap unit distance", Float) = .1
+		[Enum(UnityEngine.Rendering.CullMode)] _Cull ("Cull", Float) = 0
+		[MaterialToggle] _ZWrite ("ZWrite", Float) = 0
+		_Test ("Test", Float) = 0
+		_Loop ("FBM loop count (int value)", Range(0,8)) = 5
 	}
 	SubShader {
 		Tags { "Queue"="AlphaTest+500" "LightMode"="ForwardBase"}
 		LOD 200
-		Cull Off
+		Cull [_Cull]
+		ZWrite [_ZWrite]
 
 		GrabPass {
 			"_GrabTex_myxy_Ocean"
@@ -27,6 +53,9 @@
 
 			#pragma vertex vert
 			#pragma fragment frag
+			#pragma multi_compile_fog
+			#pragma shader_feature ENABLE_DOMAIN_WARPING
+			#pragma multi_compile _NOISESPACE_WORLD _NOISESPACE_OBJECT _NOISESPACE_UV _NOISESPACE_UVTORUS
 
 			#include "UnityCG.cginc"
 			#include "UnityLightingCommon.cginc"
@@ -40,36 +69,49 @@
 			float _Opacity;
 			float _Distortion;
 			fixed4 _Color;
-			fixed4 _Color2;
-			float _Ref;
+			fixed4 _ColorShallow;
+			float _ReflectFace;
+			float _ReflectBack;
 			float _Pa1;
 			float _IsVD;
 			float _VD;
 			float4 _Flow;
 			float _DF;
-
+			float _MUD;
+			float4 _Scale;
+			float4 _LD;
+			float4 _LC;
+			float _Test;
+			float _Loop;
+			float _FresnelPower;
+			float _FresnelInt;
+			float _SpecInt;
+			float _Manual_directional_light_direction;
+			float _Manual_directional_light_color;
+			float _Blend_DLC_RP;
+			float _Refract;
 
 			struct appdata
 			{
 				float4 vertex : POSITION;
 				float3 normal : NORMAL;
 				float4 tangent : TANGENT;
+				float2 uv : TEXCOORD0;
 			};
 
 			struct v2f
 			{
 				float4 pos : SV_POSITION;
 				float3 wPos : WORLD_POS;
-				float4 grabPos : TEXCOORD0;
+				UNITY_FOG_COORDS(0)
 				float4 scrPos : TEXCOORD1;
 				float3 normal : TEXCOORD2;
-				float3 tangent : TEXCOORD3;
+				float4 grabPos : TEXCOORD3;
+				float2 uv : TEXCOORD4;
 			};
 
-		   	//clipPos.w = 1, viewPos.z = -1
 		    float2 ClipXYToViewXY(float2 clipXY)
 		    {
-		        //clipXY.xy = mad(1, UNITY_MATRIX_P._m02_m12, clipXY.xy);
 		        clipXY.xy += UNITY_MATRIX_P._m02_m12;
 		        return float2(clipXY.x / UNITY_MATRIX_P._m00, clipXY.y / UNITY_MATRIX_P._m11);
 		    }       
@@ -138,9 +180,63 @@
 		        return LinearEyeDepthViewXY(zBuffer, viewXY);
 		    }
 
+			uint uh11(uint p)
+			{
+				p += (p << 10);
+				p ^= (p >> 6);
+				p += (p << 3);
+				p ^= (p >> 11);
+				p += (p << 15);
+				return p;
+			}
+
+			uint uh13(uint3 p)
+			{
+				return uh11(p.x ^ uh11(p.y ^ uh11(p.z)));
+			}
+
+			uint uh14(uint4 p)
+			{
+				return uh11(p.x ^ uh11(p.y ^ uh11(p.z ^ uh11(p.w))));
+			}
+
+			float as01float(uint p)
+			{
+				const uint ieeemantissa = 0x007fffff;
+				const uint ieeeone = 0x3f800000;;
+				p &= ieeemantissa;
+				p |= ieeeone;
+				float f = asfloat(p);
+				return f-1;
+			}
+			float h13(float3 p)
+			{
+				return frac(as01float(uh13(asuint(p))));
+			}
+
 			float h14(float4 p)
 			{
-				return frac(sin(dot(float4(32.5325,54.4235,73.5252,24.5245),p))*42545.25432);
+				return frac(as01float(uh14(asuint(p))));
+			}
+
+			float n13(float3 p)
+			{
+				float3 i = floor(p);
+				float3 f = frac(p);
+				f *= f * (3 - 2*f);
+				return lerp(
+					lerp(
+						lerp(h13(i+float3(0,0,0)),h13(i+float3(1,0,0)),f.x),
+						lerp(h13(i+float3(0,1,0)),h13(i+float3(1,1,0)),f.x),
+						f.y
+					),
+					lerp(
+						lerp(h13(i+float3(0,0,1)),h13(i+float3(1,0,1)),f.x),
+						lerp(h13(i+float3(0,1,1)),h13(i+float3(1,1,1)),f.x),
+						f.y
+					),
+					f.z	
+				);
 			}
 
 			float n14(float4 p)
@@ -179,17 +275,41 @@
 				);
 			}
 
+			#define FBMLOOP 5
+
+			float fbm13(float3 p) {
+				float f = 0;
+				float a = 1.;
+				//float c = 4/5;
+				//float s = 3/5;
+				//float3x3 rxy = float3x3(c, s, 0,-s, c, 0, 0, 0, 1);
+				//float3x3 rxz = float3x3(c, 0, s, 0, 1, 0,-s, 0, c);
+				//float3x3 rxyz = mul(mul(rxz,rxy),rxz);
+				float3x3 rxyz = float3x3(19./125,108./125,12./25,-108./125,44./125,-9./25,-12./25,-9./25,4./5);
+
+				[loop]
+				for (int i = 0; i < _Loop; i++)
+				{
+					a *= 2.;
+					f += n13(p*a/2)/a;
+					p = mul(rxyz,p);
+				}
+				return f;
+			}
+
 			float fbm14(float4 p) {
 				float f = 0;
 				float a = 1.;
-				float c = cos(1);
-				float s = sin(1);
-				float4x4 rxy = float4x4(c, s, 0, 0,-s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-				float4x4 rxz = float4x4(c, 0, s, 0, 0, 1, 0, 0,-s, 0, c, 0, 0, 0, 0, 1);
-				float4x4 rxw = float4x4(c, 0, 0, s, 0, 1, 0, 0, 0, 0, 1, 0,-s, 0, 0, c);
-				float4x4 rxyzw = mul(rxw,mul(rxz,rxy));
-				[unroll]
-				for (int i = 0; i < 5; i++)
+				//float c = 4/5;
+				//float s = 3/5;
+				//float4x4 rxy = float4x4(c, s, 0, 0,-s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+				//float4x4 rxz = float4x4(c, 0, s, 0, 0, 1, 0, 0,-s, 0, c, 0, 0, 0, 0, 1);
+				//float4x4 rxw = float4x4(c, 0, 0, s, 0, 1, 0, 0, 0, 0, 1, 0,-s, 0, 0, c);
+				//float4x4 rxyzw = mul(mul(mul(mul(rxy,rxz),rxw),rxy),rxz);
+				float4x4 rxyzw = float4x4(-776./3125,492./625,1293./3125,48./125,-1293./3125,256./625,-2376./3125,-36./125,-492./625,-36./125,256./625,-9./25,-48./125,-9./25,-36./125,4./5);
+
+				[loop]
+				for (int i = 0; i < _Loop; i++)
 				{
 					a *= 2.;
 					f += n14(p*a/2)/a;
@@ -198,12 +318,58 @@
 				return f;
 			}
 
-			float map(float4 p)
+			float fbm_1_2t1_3s(float3 p, float3 s)
 			{
-				//return fbm14(p);
-				float d = fbm14(p);
-				return fbm14(mad(d,_DF,p));
+				float3 f = float3(frac(p.xy),p.z);
+				return lerp(
+					lerp(fbm13((f+float3(0,0,0))*s),fbm13((f+float3(1,0,0))*s),1-f.x),
+					lerp(fbm13((f+float3(0,1,0))*s),fbm13((f+float3(1,1,0))*s),1-f.x),
+					1-f.y
+				);
 			}
+
+			float map14(float4 p, float level)
+			{
+				#ifdef ENABLE_DOMAIN_WARPING
+				float d = fbm14(p);
+				#else
+				float d = 0;
+				#endif
+				float4 pnear = p;
+				pnear.xyz /= pow(2,floor(level));
+				float4 pfar = p;
+				pfar.xyz /= pow(2,ceil(level));
+				return lerp(fbm14(mad(d,_DF,pnear)),fbm14(mad(d,_DF,pfar)),frac(level));
+			}
+
+			float map_1_2t1_3s(float3 p, float3 s, float level)
+			{
+				#ifdef ENABLE_DOMAIN_WARPING
+				float d = fbm_1_2t1_3s(p,s);
+				#else
+				float d = 0;
+				#endif
+				float3 pnear = p;
+				pnear.xy /= pow(2,floor(level));
+				float3 pfar = p;
+				pfar.xy /= pow(2,ceil(level));
+				return lerp(fbm_1_2t1_3s(mad(d,_DF,pnear),s),fbm_1_2t1_3s(mad(d,_DF,pfar),s),frac(level));
+			}
+
+			float map13(float3 p, float level)
+			{
+				#ifdef ENABLE_DOMAIN_WARPING
+				float d = fbm13(p);
+				#else
+				float d = 0;
+				#endif
+				float3 pnear = p;
+				pnear.xy /= pow(2,floor(level));
+				float3 pfar = p;
+				pfar.xy /= pow(2,ceil(level));
+				return lerp(fbm13(mad(d,_DF,pnear)),fbm13(mad(d,_DF,pfar)),frac(level));
+			}
+
 
 			v2f vert(appdata v) {
 				v2f o;
@@ -212,54 +378,86 @@
 				o.grabPos = ComputeGrabScreenPos(o.pos);
 				o.normal = UnityObjectToWorldNormal(v.normal);
 				o.scrPos = ComputeScreenPos(o.pos);
-				o.tangent = mul(unity_ObjectToWorld, v.tangent.xyz);
+				o.uv = v.uv;
 				COMPUTE_EYEDEPTH(o.scrPos.z);
+				UNITY_TRANSFER_FOG(o,o.pos);
 				return o;
 			}
+
+			#define tau 6.28318530717958647692528676655900576839433879875021
 
 			fixed4 frag(v2f i) : SV_Target
 			{
 				fixed4 c = _Color;
-				float time = _Time.y;
+				float3 wpos = i.wPos;
+				float time = _Time.y + _Test;
+				float level = max(0,log2(length(ddx(i.wPos)+ddy(i.wPos))/_MUD));
 				float3 normal = normalize(i.normal);
-				float3 tangent = normalize(cross(cross(normal,i.tangent),normal));
-				float3 binormal = normalize(cross(normal,tangent));
-				float3 lightDir = normalize(_WorldSpaceLightPos0.xyz);
 				float3 viewDir = normalize(i.wPos - _WorldSpaceCameraPos);
-				//viewDir = normalize(UnityWorldSpaceViewDir(i.wPos));
-				float3 cameraDir = normalize(mul(-transpose((float3x3)UNITY_MATRIX_V),float3(0,0,1)));
+				float3 cameraDir = cameraDir = unity_CameraToWorld._m02_m12_m22;
 				float dotnv = dot(normal, -viewDir);
-				viewDir = dotnv < 0 ? viewDir - 2.*dotnv*normal : viewDir;
+				//viewDir = dotnv < 0 ? -(-viewDir - 2.*dotnv*normal) : viewDir;
 
-				float noise = map(float4(mad(time,-_Flow.xyz,i.wPos),time*_Flow.w));
-				float d = .00001*time;
-				float3 vecx = mad(_WH*(map(float4(mad(tangent,d,mad(time,-_Flow.xyz,i.wPos)),time*_Flow.w))-noise),normal,tangent*d);
-				float3 vecy = mad(_WH*(map(float4(mad(binormal,d,mad(time,-_Flow.xyz,i.wPos)),time*_Flow.w))-noise),normal,binormal*d);
-				float3 wnormal = normalize(cross(vecx,vecy));
+				// Calculate normal
 
-				float3 ref = reflect(-lightDir, wnormal);
-				float refPower = dot(ref, -viewDir);
-				float3 specPower = pow(max(0,refPower), _SpecPower);
+				#ifdef _NOISESPACE_WORLD
+				float4 p4n = float4(mad(time,-_Flow.xyz,i.wPos),time*_Flow.w);
+				p4n *= _Scale;
+				#elif _NOISESPACE_OBJECT
+				float4 p4n = float4(mul(unity_WorldToObject, float4(mad(time,-_Flow.xyz,i.wPos), 1)).xyz,time*_Flow.w);
+				p4n *= _Scale;
+				#elif _NOISESPACE_UV
+				float3 p4n = float3(mad(time,-_Flow.xy,i.uv),time);
+				p4n *= _Scale.xyw;
+				#elif _NOISESPACE_UVTORUS
+				float3 p4n = float3(mad(time,-_Flow.xy,i.uv),time);
+				#endif
+
+				float d = .001*log2(time);
+
+				float3 nddxwpos = normalize(ddx(wpos));
+				float3 wtanx = normalize(cross(normal,cross(ddx(wpos),normal)));
+				float dotwtanxnddxwpos = dot(wtanx,nddxwpos);
+				float3 apprxwposdiffx = wtanx / dotwtanxnddxwpos * d;
+
+				float3 nddywpos = normalize(ddy(wpos));
+				float3 wtany = normalize(cross(normal,cross(ddy(wpos),normal)));
+				float dotwtanynddywpos = dot(wtany,nddywpos);
+				float3 apprxwposdiffy = wtany / dotwtanynddywpos * d;
+
+				#ifdef _NOISESPACE_UVTORUS
+				float3 wavepos0 = _WH*map_1_2t1_3s(p4n,_Scale.xyw,level)*normal; //+wpos
+				float3 waveposx = _WH*map_1_2t1_3s(p4n+ddx(p4n)*d/length(ddx(wpos))/dotwtanxnddxwpos,_Scale.xyw,level)*normal+apprxwposdiffx; //+wpos
+				float3 waveposy = _WH*map_1_2t1_3s(p4n+ddy(p4n)*d/length(ddy(wpos))/dotwtanynddywpos,_Scale.xyw,level)*normal+apprxwposdiffy; //+wpos
+				#elif _NOISESPACE_UV
+				float3 wavepos0 = _WH*map13(p4n,level)*normal; //+wpos
+				float3 waveposx = _WH*map13(p4n+ddx(p4n)*d/length(ddx(wpos))/dotwtanxnddxwpos,level)*normal+apprxwposdiffx; //+wpos
+				float3 waveposy = _WH*map13(p4n+ddy(p4n)*d/length(ddy(wpos))/dotwtanynddywpos,level)*normal+apprxwposdiffy; //+wpos
+				#else
+				float3 wavepos0 = _WH*map14(p4n,level)*normal; //+wpos
+				float3 waveposx = _WH*map14(p4n+ddx(p4n)*d/length(ddx(wpos))/dotwtanxnddxwpos,level)*normal+apprxwposdiffx; //+wpos
+				float3 waveposy = _WH*map14(p4n+ddy(p4n)*d/length(ddy(wpos))/dotwtanynddywpos,level)*normal+apprxwposdiffy; //+wpos
+				#endif
+
+				float3 wnormal = normalize(cross(waveposx-wavepos0,waveposy-wavepos0));
+
+				// Calculate UV for grabtexture and cameradepthtexture
 
 				float4 depth4cd = UNITY_PROJ_COORD(i.scrPos);
 				float truedepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, depth4cd))/dot(cameraDir, viewDir);
 				if(UNITY_MATRIX_P._m22 < .001) truedepth = LinearEyeDepthScreenUV(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, depth4cd),depth4cd.xy/depth4cd.w);
-				if (truedepth < 0) truedepth = _ProjectionParams.z;
-				//if(UNITY_MATRIX_P._m22 < .001) truedepth = LinearEyeDepthScreenUV(0,depth4cd.xy/depth4cd.w);
-				//truedepth = 1/(_ZBufferParams.z*SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, depth4cd)+_ZBufferParams.w)/dot(cameraDir, viewDir);
-				//truedepth = tex2D(_CameraDepthTexture, depth4cd.xy/depth4cd.w).r;
+				if (truedepth < 0) truedepth = 1.#INF;
 				float3 wnormalc = mul(unity_WorldToCamera, wnormal);
 				float4 grabUV = i.grabPos;
 				float2 aspect = _ScreenParams.xy / min(_ScreenParams.x, _ScreenParams.y);
 				grabUV.xy += _Distortion * wnormalc.xy / aspect;
-				depth4cd.xy += _Distortion * wnormalc.xz / aspect;
+				depth4cd.xy += _Distortion * wnormalc.xy / aspect;
+
+				// Calculate transparency
 
 				float depth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, depth4cd))/dot(cameraDir, viewDir);
 				if(UNITY_MATRIX_P._m22 < .001) depth = LinearEyeDepthScreenUV(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, depth4cd),saturate(depth4cd.xy/depth4cd.w));
-				if (depth < 0) depth = _ProjectionParams.z;
-				//if(UNITY_MATRIX_P._m22 < .001) depth = LinearEyeDepthScreenUV(0,depth4cd.xy/depth4cd.w);
-				//depth = 1/(_ZBufferParams.z*SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, depth4cd)+_ZBufferParams.w)/dot(cameraDir, viewDir);
-				//depth = tex2D(_CameraDepthTexture, depth4cd.xy/depth4cd.w).r;
+				if (depth < 0) depth = 1.#INF;
 				float surfDepth = distance(_WorldSpaceCameraPos, i.wPos);
 				float depthDiff = depth - surfDepth;
 				float truedepthDiff = truedepth - surfDepth;
@@ -270,27 +468,37 @@
 				}
 				float transparency = 1 - saturate(1 / pow(_Opacity, depthDiff > 0 ? depthDiff : truedepthDiff));
 
+				// Lighting
+
+				float3 lightDir;
+				if (_Manual_directional_light_direction)
+				{
+					lightDir = normalize(_LD.xyz);
+				}
+				else
+				{
+					lightDir = normalize(_WorldSpaceLightPos0.xyz);
+				}
+
+				float3 lightColor;
+				if (_Manual_directional_light_color)
+				{
+					lightColor = _LC.rgb;
+				}
+				else
+				{
+					lightColor = _LightColor0.rgb;
+				}
+				fixed4 reflectionProbeColor = UNITY_SAMPLE_TEXCUBE_LOD(unity_SpecCube0, dotnv < 0 ? refract(viewDir, -wnormal, 1/_Refract) : reflect(viewDir, wnormal), 0);
+				lightColor = lerp(lightColor, reflectionProbeColor, _Blend_DLC_RP);
+
+				float3 specular = pow(max(0,dot(dotnv < 0 ? refract(-lightDir, wnormal, _Refract) : reflect(-lightDir, wnormal),-viewDir)), _SpecPower);
+				float fresnel = pow(1-max(0,dot(lightDir,wnormal)),_FresnelPower);
+
 				fixed4 grabCol = tex2D(_GrabTex_myxy_Ocean, saturate((depthDiff > 0 ? grabUV.xy : i.grabPos.xy)/grabUV.w));
-				c.rgb = lerp(grabCol, lerp(_Color2,c.rgb,pow(transparency,_Pa1)), dotnv < 0 ? 0 : transparency);
-				c.rgb += (float3)specPower*_LightColor0*(dotnv < 0 ? 1-_Ref:_Ref);
-				//c.rgb = exp(-surfDepth*.1);
-				//c.rgb = exp(-truedepth*.1);
-				//c.rgb = truedepthDiff;
-				//c.rgb = truedepth;
-				//c.rgb = truedepth*.1;
-				//c.rgb = exp(-abs(_ZBufferParams.xyzw)*2).xyz;
-				//c.rgb = SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, UNITY_PROJ_COORD(i.scrPos));
-				//float cd = tex2D(_CameraDepthTexture, UNITY_PROJ_COORD(i.scrPos).xy/UNITY_PROJ_COORD(i.scrPos).w).r;
-				//float dist = LinearEyeDepth(cd) + (UNITY_MATRIX_P._m20 ? _ProjectionParams.z - _ProjectionParams.y : 0);
-				//c.rgb = exp(-(dist));
-				//c.rgb = SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, depth4cd);
-				//c.rgb = noise;
-				//c.rgb = (ddx(noise))/length(ddx(i.wPos));
-				//c.rgb = .5*wnormal+.5;
-				//c.rgb = .5*normalize(vecx)+.5;
-				//float4 cddx = ddx(c);
-				//float4 cddy = ddy(c);
-				//c += cddx*.5 + cddy*.5;
+				c.rgb = lerp(grabCol * (dotnv < 0 ? _ReflectBack : 1), lerp(_ColorShallow,c.rgb,pow(transparency,_Pa1)), dotnv < 0 ? 0 : transparency);
+				c.rgb += ((specular*_SpecInt+fresnel*_FresnelInt)*lightColor)*(dotnv < 0 ? _ReflectBack:_ReflectFace);
+				UNITY_APPLY_FOG(i.fogCoord, col);
 
 				return c;
 			}

@@ -1,16 +1,16 @@
-﻿Shader "WakameIsland/SkyboxGrad"
+﻿Shader "myxy/WaterShader/SkyboxGrad"
 {
 	Properties
 	{
 		_Color3 ("Sun", Color) = (1,0,0,1)
-		_Color0 ("Sky1", Color) = (1,1,1,1)
-		_Color2 ("Sky2", Color) = (1,1,1,1)
-		_Color1 ("Ambient", Color) = (0,0,0,1)
-		_Ex ("Param1", Range(0,1)) = 0.2
-		_Ex2 ("Param2", Range(0,10)) = 0.2
-		_Ex3 ("Param3", Range(0,10)) = 0.2
+		_Color0 ("Horizon", Color) = (1,1,1,1)
+		_Color2 ("Sky", Color) = (1,1,1,1)
+		_Ex ("Horizon intensity", Range(0,1)) = 0.2
+		_Ex2 ("Sun obscurity", Range(0,10)) = 0.2
+		_Ex3 ("Ambient intensity", Range(0,10)) = 0.2
 		_Th0("Sun size", Range(0,.25)) = .1
 		_Th1("Ambient size", Range(0,1)) = .2
+		_Ha("Horizon angle",Range(-1,1)) = 0
 	}
 	SubShader
 	{
@@ -43,7 +43,6 @@
 			};
 
 			fixed4 _Color0;
-			fixed4 _Color1;
 			fixed4 _Color2;
 			fixed4 _Color3;
 			float _Th0;
@@ -51,6 +50,7 @@
 			float _Ex;
 			float _Ex2;
 			float _Ex3;
+			float _Ha;
 
 			#define tau  (2*acos(-1));
 			
@@ -68,6 +68,8 @@
 				float3 cameraDir = normalize(i.wPos - _WorldSpaceCameraPos);
 
 				float a = atan2(cameraDir.y, length(cameraDir.xz))/tau;
+
+				a += _Ha*(1-abs(a));
 				
 				a *= (3-2*a)*a;
 
@@ -75,7 +77,7 @@
 				float s = acos(dot(normalize(_WorldSpaceLightPos0.xyz), cameraDir))/tau;
 				col = lerp(_Color3, col, pow(smoothstep(0, _Th0, s),_Ex2));
 				float s2 = acos(dot(normalize(_WorldSpaceLightPos0.xyz), cameraDir))/tau;
-				col = lerp(_Color1, col, pow(smoothstep(0, _Th1, s2),_Ex3));
+				col = lerp(_Color3, col, pow(smoothstep(0, _Th1, s2),_Ex3));
 				return fixed4(col.rgb, 1);
 			}
 			ENDCG

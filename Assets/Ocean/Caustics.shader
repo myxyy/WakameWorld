@@ -1,15 +1,12 @@
-﻿// Caustics code from https://www.shadertoy.com/view/MdKXDm
-// Remixed by myxy
-// License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License
-Shader "WakameIsland/Caustics"
+﻿Shader "myxy/WaterShader/Caustics"
 {
     Properties
     {
-        _p0 ("p0", Range(0,1)) = 1
-        _p1 ("p1", Float) = 25
-        _p2 ("p2", Float) = 7
-        _ts ("time scale", Range(0,10)) = 1
-        _ss ("space scale", Range(0,2)) = 1
+        _p0 ("Caustics parameter 1", Range(0,1)) = 1
+        _p1 ("Caustics parameter 2", Float) = 25
+        _p2 ("Caustics parameter 1", Float) = 7
+        _ts ("Time scale", Range(0,10)) = 1
+        _ss ("Space scale", Range(0,2)) = 1
     }
     SubShader
     {
@@ -49,6 +46,11 @@ Shader "WakameIsland/Caustics"
                 return frac(sin(dot(p,float2(32.52554,45.5634)))*12432.23553);
             }
 
+            float h13(float3 p)
+            {
+                return frac(sin(dot(p,float3(32.52554,45.5634,23.1515)))*12432.23553);
+            }
+
             float n12(float2 p)
             {
                 float2 i = floor(p);
@@ -72,22 +74,22 @@ Shader "WakameIsland/Caustics"
             float caustics(float2 p, float t)
             {
                 float3 k = float3(p,t);
-                float l;
-                float3x3 m = float3x3(-2,-1,2,3,-2,1,1,2,2);
+                float l = 1;
+                float3x3 m = float3x3(2,-2,1,-2,-1,2,1,2,2);
+
                 float n = n12(p);
-                k = mul(m, k) * .5;
-                l = length(.5 - frac(k+n));
-                k = mul(m, k) * .4;
-                l = min(l, length(.5 - frac(k+n)));
-                k = mul(m, k) * .3;
-                l = min(l, length(.5 - frac(k+n)));
+                for(int i=0;i<3;i++)
+                {
+                    k = mul(m, k) * .4;
+                    l = min(l, length(.5 - frac(k+n)));
+                }
                 return pow(l,_p2)*_p1;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
                 float3 fwpos = frac(i.wpos);
-                if(h12(i.wpos.xz)*_p0 < caustics(i.wpos.xz*_ss, _Time.y*_ts)) clip(-1);
+                if(h13(float3(i.wpos.xz,frac(_Time.y)))*_p0 < caustics(i.wpos.xz*_ss, _Time.y*_ts)) clip(-1);
                 return 0;
             }
             ENDCG

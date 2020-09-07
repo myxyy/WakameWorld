@@ -1,16 +1,18 @@
-﻿Shader "WakameIsland/Underwater"
+﻿Shader "myxy/WaterShader/Underwater"
 {
     Properties
     {
         _SL ("Sea level", Float) = 0.
-        _Color ("Color", Color) = (0,0,0,1)
-        _SC ("Sea color", Color) = (0,0,1,1)
+        _Color ("Near color", Color) = (0,0,0,1)
+        _SC ("Far color", Color) = (0,0,1,1)
         _Tr ("Transparency", Range(0,1)) = .1
         _Tr2 ("Transparency2", Range(0,1)) = .1
+        _Bl ("Blur max", Range(0,10)) = 0
+        _Bld ("Blur max distance", Float) = 0
     }
     SubShader
     {
-        Tags { "Queue"="AlphaTest+600" }
+        Tags { "Queue"="AlphaTest+600" "LightMode"="ForwardBase" }
         LOD 100
         ZTest Always
         ZWrite Off
@@ -24,8 +26,6 @@
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
-            #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
 
@@ -38,8 +38,8 @@
             struct v2f
             {
                 float4 vertex : SV_POSITION;
-                float4 grabPos : TEXCOORD2;
-                float4 scrPos : TEXCOORD3;
+                noperspective float4 grabPos : TEXCOORD2;
+                noperspective float4 projCoord: TEXCOORD3;
                 float3 viewDir : TEXCOORD1;
             };
 
@@ -50,18 +50,18 @@
 			sampler2D _CameraDepthTexture;
             float _Tr;
             float _Tr2;
+            float _Bl;
+            float _Bld;
 
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = float4(1-2*v.uv.x,2*v.uv.y-1,0,1);
                 float3 localViewDir = mul(unity_CameraInvProjection, float4(o.vertex.x, -o.vertex.y, 0, 1)).xyz;
-                float4x4 vrotate = UNITY_MATRIX_V;
-                vrotate._m03 = vrotate._m13 = vrotate._m23 = 0;
-                o.viewDir = mul(transpose(vrotate), float4(localViewDir,0)).xyz;
+                o.viewDir = mul(transpose(UNITY_MATRIX_V), localViewDir);
 
 				o.grabPos = ComputeGrabScreenPos(o.vertex);
-				o.scrPos = ComputeScreenPos(o.vertex);
+				o.projCoord = UNITY_PROJ_COORD(ComputeScreenPos(o.vertex));
                 return o;
             }
 
@@ -70,34 +70,29 @@
             fixed4 frag (v2f i) : SV_Target
             {
 				float3 wscp = _WorldSpaceCameraPos;
-                /*
-				#if defined(USING_STEREO_MATRICES)
-					wscp = (unity_StereoWorldSpaceCameraPos[0] + unity_StereoWorldSpaceCameraPos[1]) * .5;
-				#endif
-                */
                 if (wscp.y > _SL) clip(-1);
-                //float3 viewDir = UNITY_MATRIX_V._m20_m21_m22;
-				float3 cameraDir = normalize(mul(-transpose((float3x3)UNITY_MATRIX_V),float3(0,0,1)));
+				float3 cameraDir = unity_CameraToWorld._m02_m12_m22;
                 float3 viewDir = normalize(i.viewDir);
                 float seaDist = length((_SL-wscp.y)/viewDir.y);
-                seaDist = viewDir.y > 0 ? seaDist : 100000;
+                seaDist = viewDir.y > 0 ? seaDist : _ProjectionParams.z;
                 fixed4 col;
-                fixed4 grabCol = tex2D(_GrabTex_myxy_UnderWater, i.grabPos.xy/i.grabPos.w);
-				float4 depth4cd = UNITY_PROJ_COORD(i.scrPos);
-				float depth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, depth4cd))/dot(cameraDir, viewDir);
+				float depth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, i.projCoord))/dot(cameraDir, viewDir);
+
+                float2 dxGrabPos = ddx(i.grabPos);
+                float2 dyGrabPos = ddy(i.grabPos);
+                fixed4 grabCol = (fixed4)0;
+
+                float blur = saturate(depth/_Bld)*_Bl;
+                grabCol += tex2D(_GrabTex_myxy_UnderWater, (i.grabPos.xy+dxGrabPos*blur)/i.grabPos.w);
+                grabCol += tex2D(_GrabTex_myxy_UnderWater, (i.grabPos.xy-dxGrabPos*blur)/i.grabPos.w);
+                grabCol += tex2D(_GrabTex_myxy_UnderWater, (i.grabPos.xy+dyGrabPos*blur)/i.grabPos.w);
+                grabCol += tex2D(_GrabTex_myxy_UnderWater, (i.grabPos.xy-dyGrabPos*blur)/i.grabPos.w);
+                grabCol /= 4;
+
                 float test = depth > seaDist ? 1 : 0;
                 depth = depth > seaDist ? seaDist : depth;
                 col = grabCol;
                 col.rgb += _Color.rgb * min(depth*_Tr2, 1);
-                //float viewDirLatitudeAngle = atan2(viewDir.y,length(viewDir.xz))/tau;
-                //float viewDirLongitudeAngle = atan2(viewDir.z,viewDir.x)/tau;
-                //return fixed4(frac(12*viewDirLatitudeAngle), frac(12*viewDirLongitudeAngle), 0, 1);
-                //return fixed4(viewDir, 1);
-                //return fixed4(fixed3(exp(-depth),test,0),1);
-                //return fixed4((fixed3)(exp(-depth*.1)),1);
-                //return fixed4(viewDir*.5+.5,1);
-                //return fixed4(cameraDir*.5+.5,1);
-                //return fixed4((fixed3)dot(cameraDir, viewDir),1);
                 return lerp(col, _SC, 1-exp(-depth*_Tr));
             }
             ENDCG

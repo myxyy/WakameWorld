@@ -20,11 +20,14 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Floats:
+    - _ESL: 1
     - _It: 0.012
     - _Pr1: 7
     - _Pr2: 21
     - _Pr3: 0.4
+    - _Pr4: 1
     - _SL: 0
-    - _Sc: 4
+    - _Sc: 0.1
+    - _TSc: 0.1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
