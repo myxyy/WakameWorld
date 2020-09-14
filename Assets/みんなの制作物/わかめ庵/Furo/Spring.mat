@@ -4,8 +4,9 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: Spring
   m_Shader: {fileID: 4800000, guid: 4e65a67bc52278c4b8d566532f2304ce, type: 3}
   m_ShaderKeywords: _ALPHAPREMULTIPLY_ON
@@ -63,29 +64,64 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _Blend_DLC_RP: 0.5
     - _BumpScale: 1
+    - _Cull: 0
     - _Cutoff: 0.5
+    - _DF: 1
     - _DetailNormalMapScale: 1
     - _Distortion: 0.03
     - _DstBlend: 10
+    - _ENABLE_DOMAIN_WARPING: 0
+    - _ENABLE_PSEUDO_MIPMAP: 0
+    - _ENABLE_VERTEX_NOISE: 0
+    - _ENABLE_WAVE: 0
+    - _FresnelInt: 0.2
+    - _FresnelPower: 5
     - _GlossMapScale: 1
     - _Glossiness: 1
     - _GlossyReflections: 1
+    - _IsVD: 0
+    - _Loop: 3
+    - _MUD: 0.1
+    - _Manual_directional_light_color: 0
+    - _Manual_directional_light_direction: 0
+    - _MaxDist: 20
     - _Metallic: 1
+    - _MinDist: 5
     - _Mode: 3
+    - _NoiseSpace: 0
     - _OcclusionStrength: 1
-    - _Opacity: 1.196
+    - _Offset: 0
+    - _Opacity: 0.07
+    - _Pa1: 5
     - _Parallax: 0.02
+    - _ReflectBack: 0.5
+    - _ReflectFace: 0.5
+    - _Refract: 1.334
     - _SmoothnessTextureChannel: 0
-    - _SpecPower: 7.85
+    - _SpecInt: 2.46
+    - _SpecPower: 5.3
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _TessFactor: 1
     - _Test: 0.05
     - _Transparency: 1.08
     - _UVSec: 0
+    - _VD: 0.5
+    - _WH: 1
+    - _WHT: 0.01
+    - _WHT2: 0.01
+    - _WavePower: 1
     - _ZWrite: 0
     m_Colors:
     - _AmbientColor: {r: 0.20069203, g: 0.26956204, b: 0.4705882, a: 1}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _ColorShallow: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Flow: {r: 0, g: 0, b: 0, a: 1}
+    - _LC: {r: 1, g: 1, b: 1, a: 1}
+    - _LD: {r: 0, g: 1, b: 0, a: 0}
+    - _Scale: {r: 1, g: 1, b: 1, a: 1}
+    - _ScaleT: {r: 0.1, g: 0.1, b: 0.1, a: 1}
     - _SunColor: {r: 0.608555, g: 0.58391, b: 0.7941176, a: 1}
