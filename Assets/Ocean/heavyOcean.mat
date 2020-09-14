@@ -73,35 +73,47 @@ Material:
     - _Distortion: 0.12
     - _DstBlend: 10
     - _ENABLE_DOMAIN_WARPING: 0
-    - _FresnelInt: 0
+    - _ENABLE_PSEUDO_MIPMAP: 0
+    - _ENABLE_VERTEX_NOISE: 0
+    - _ENABLE_WAVE: 0
+    - _FresnelInt: 0.405
     - _FresnelPower: 5
     - _GlossMapScale: 1
     - _Glossiness: 1
     - _GlossyReflections: 1
     - _IsVD: 0
-    - _Loop: 5
+    - _Loop: 4
     - _MUD: 0.1
     - _Manual_directional_light_color: 0
     - _Manual_directional_light_direction: 0
+    - _MaxDist: 20
     - _Metallic: 1
+    - _MinDist: 5
     - _Mode: 3
     - _NoiseSpace: 0
     - _OcclusionStrength: 1
+    - _Offset: 0
     - _Opacity: 1.063
     - _Pa1: 5
     - _Parallax: 0.02
     - _Ref: 0.5
+    - _ReflectBack: 0.5
+    - _ReflectFace: 0.5
     - _Refract: 1.33
     - _SmoothnessTextureChannel: 0
     - _SpecInt: 4
     - _SpecPower: 7.3
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _TessFactor: 1
     - _Test: 0.05
     - _Transparency: 1.08
     - _UVSec: 0
     - _VD: 0.5
     - _WH: 1
+    - _WHT: 0.01
+    - _WHT2: 0.01
+    - _WavePower: 1
     - _ZWrite: 0
     m_Colors:
     - _AmbientColor: {r: 1, g: 1, b: 1, a: 1}
@@ -113,4 +125,5 @@ Material:
     - _LC: {r: 1, g: 1, b: 1, a: 1}
     - _LD: {r: 0, g: 1, b: 0, a: 0}
     - _Scale: {r: 1, g: 1, b: 1, a: 1}
+    - _ScaleT: {r: 0.1, g: 0.1, b: 0.1, a: 1}
     - _SunColor: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
