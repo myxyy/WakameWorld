@@ -7,6 +7,7 @@
 		_Opacity("Opacity", Range(0,5)) = 0.1
 		[Header(Wave and Noise)]
 		[KeywordEnum(World, Object, UV, UVTorus)] _NoiseSpace ("Noise space", Float) = 0
+		[MaterialToggle] _NormalByVector ("Normal by vector:ON/Normal by height:OFF", Float) = 0
 		_WH("Wave height", Range(0,2)) = 1
 		_Distortion("Distortion", Range(0,1)) = 0.1
 		_Loop ("FBM loop count (max 8)", Int) = 5
@@ -33,14 +34,14 @@
 		[MaterialToggle] _IsVD("Enable virtual depth", Float) = 0
 		_VD ("Virtual depth", Float) = 0.5
 		[Header(Pseudo mipmap)]
-		[Toggle] _ENABLE_PSEUDO_MIPMAP ("Enable pseudo mipmap", Float) = 0
+		[MaterialToggle] _ENABLE_PSEUDO_MIPMAP ("Enable pseudo mipmap", Float) = 0
 		_MUD ("Pseudo mipmap unit distance", Float) = .1
 		[Header(Tessellation)]
 		_MinDist ("Min distance", Float) = 5
 		_MaxDist ("Max distance", Float) = 20
 		_TessFactor ("Tessellation factor", Int) = 1
 		[Header(Vertex)]
-		[MaterialToggle] _ENABLE_VERTEX_NOISE ("Enable vertex noise", Float) = 0
+		[MaterialToggle] _ENABLE_VERTEX_NOISE ("Enable vertex noise, only for 'Normal by height' mode", Float) = 0
 		_WHT ("Amplitude for noise (object space)", Float) = .01
 		[MaterialToggle] _ENABLE_WAVE ("Enable sine wave", Float) = 0
 		_WHT2 ("Amplitude for sine wave(object space)", Float) = .01
@@ -122,6 +123,7 @@
 			float _ENABLE_WAVE;
 			float _ENABLE_VERTEX_NOISE;
 			float _WavePower;
+			float _NormalByVector;
 
 			// Code snipetts thankfully offered by RamType-0
 			// For fetching CameraDepthTexture in the mirror
@@ -295,6 +297,21 @@
 				return float5c(x.u*y.u,x.l*y.l);
 			}
 
+			float5 mad(float5 a, float5 b, float5 c)
+			{
+				return float5c(mad(a.u,b.u,c.u),mad(a.l,b.l,c.l));
+			}
+
+			float5 ddx(float5 x)
+			{
+				return float5c(ddx(x.u),ddx(x.l));
+			}
+
+			float5 ddy(float5 x)
+			{
+				return float5c(ddy(x.u),ddy(x.l));
+			}
+			
 			// Random functions
 
 			float h13(float3 p)
@@ -318,7 +335,7 @@
 			{
 				float3 i = floor(p);
 				float3 f = frac(p);
-				f *= f * (3 - 2*f);
+				f *= f * mad(-2,f,3);
 				return lerp(
 					lerp(
 						lerp(h13(i+float3(0,0,0)),h13(i+float3(1,0,0)),f.x),
@@ -338,7 +355,7 @@
 			{
 				float4 i = floor(p);
 				float4 f = frac(p);
-				f *= f * (3 - 2*f);
+				f *= f * mad(-2,f,3);
 				return lerp(
 					lerp(
 						lerp(
@@ -374,7 +391,7 @@
 			{
 				float5 i = floor(p);
 				float5 f = frac(p);
-				f = m(f,m(f,add(float5c(3,3,3,3,3),m(float5c(-2),f))));
+				f = m(f,m(f,mad(float5c(-2),f,float5c(3))));
 				return lerp(
 					lerp(
 						lerp(
@@ -455,9 +472,9 @@
 				for (int i = 0; i < loop; i++)
 				{
 					a *= 2.;
-					f += n13(p*a/2)/a;
+					f += n13(a/2*p)/a;
 					p = mul(rxyz,p);
-					b += 1/a;
+					b += rcp(a);
 				}
 				return f/(b==0?1:b);
 			}
@@ -478,9 +495,9 @@
 				for (int i = 0; i < loop; i++)
 				{
 					a *= 2.;
-					f += n14(p*a/2)/a;
+					f += n14(a/2*p)/a;
 					p = mul(rxyzw,p);
-					b += 1/a;
+					b += rcp(a);
 				}
 				return f/(b==0?1:b);
 			}
@@ -496,7 +513,7 @@
 					a *= 2.;
 					f += n15(m(p,float5c(a/2)))/a;
 					p = mul(rotate,p);
-					b += 1/a;
+					b += rcp(a);
 				}
 				return f/(b==0?1:b);
 			}
@@ -510,9 +527,10 @@
 				pnear.xy /= exp2(floor(level));
 				float3 pfar = p;
 				pfar.xy /= exp2(ceil(level));
+				[branch]
 				if (_ENABLE_PSEUDO_MIPMAP)
 				{
-					return lerp(fbm13(mad(d,_DF,pnear),loop),fbm13(mad(d,_DF,pfar),loop),exp2(frac(level))-1);
+					return lerp(fbm13(mad(d,_DF,pnear),loop),fbm13(mad(d,_DF,pfar),loop),frac(level));
 				}
 				else
 				{
@@ -527,9 +545,10 @@
 				pnear.xyz /= exp2(floor(level));
 				float4 pfar = p;
 				pfar.xyz /= exp2(ceil(level));
+				[branch]
 				if (_ENABLE_PSEUDO_MIPMAP)
 				{
-					return lerp(fbm14(mad(d,_DF,pnear),loop),fbm14(mad(d,_DF,pfar),loop),exp2(frac(level))-1);
+					return lerp(fbm14(mad(d,_DF,pnear),loop),fbm14(mad(d,_DF,pfar),loop),frac(level));
 				}
 				else
 				{
@@ -545,30 +564,34 @@
 				float5 pfar = p;
 				pfar.u /= exp2(ceil(level));
 				d *= _DF;
+				[branch]
 				if (_ENABLE_PSEUDO_MIPMAP)
 				{
-					return lerp(fbm15(add(pnear,float5c(d,d,d,d,d)),loop),fbm15(add(pfar,float5c(d,d,d,d,d)),loop),exp2(frac(level))-1);
+					return lerp(fbm15(mad(float5c(d),float5c(_DF),pnear),loop),fbm15(mad(float5c(d),float5c(_DF),pfar),loop),frac(level));
 				}
 				else
 				{
-					return fbm15(add(pnear,float5c(d,d,d,d,d)),loop);
+					return fbm15(mad(float5c(d),float5c(_DF),pnear),loop);
 				}
 			}
 
+			// Rodrigues' rotation formula
+			// https://mathworld.wolfram.com/RodriguesRotationFormula.html
 			float3x3 rrf(float3 n, float cosa)
 			{
-				float3 nsina=n*sqrt(1-cosa*cosa);
-				return mul(float3x1(n.x,n.y,n.z),float1x3(n.x,n.y,n.z))*(1-cosa)+float3x3(
+				float3 nsina=n*sqrt(mad(-cosa,cosa,1));
+				return mad(mul(float3x1(n.x,n.y,n.z),float1x3(n.x,n.y,n.z)),(1-cosa),float3x3(
 					cosa,   -nsina.z,nsina.y,
 					nsina.z, cosa,  -nsina.x,
 					-nsina.y,nsina.x,cosa
-				);
+				));
 			}
 
 			struct appdata
 			{
 				float4 vertex : POSITION;
 				float3 normal : NORMAL;
+				float4 tangent : TANGENT;
 				float2 uv : TEXCOORD0;
 			};
 
@@ -576,6 +599,7 @@
 			{
 				float4 vertex : POSITION;
 				float3 normal : NORMAL;
+				float4 tangent : TANGENT;
 				float2 uv : TEXCOORD0;
 			};
 
@@ -583,6 +607,7 @@
 			{
 				float4 vertex : POSITION;
 				float3 normal : NORMAL;
+				float4 tangent : TANGENT;
 				float2 uv : TEXCOORD0;
 			};
 
@@ -596,6 +621,7 @@
 			{
 				float4 pos : SV_POSITION;
 				float3 wPos : WORLD_POS;
+				float3 tangent : TEXCOORD0;
 				float4 scrPos : TEXCOORD1;
 				float3 normal : TEXCOORD2;
 				float4 grabPos : TEXCOORD3;
@@ -608,6 +634,7 @@
 				v2h o;
 				o.vertex = i.vertex;
 				o.normal = i.normal;
+				o.tangent = i.tangent;
 				o.uv = i.uv;
 				return o;
 			}
@@ -633,6 +660,7 @@
 				h2d_main o;
 				o.vertex = i[id].vertex;
 				o.normal = i[id].normal;
+				o.tangent = i[id].tangent;
 				o.uv = i[id].uv;
 				return o;
 			}
@@ -642,50 +670,54 @@
 			{
 				d2f o;
 				float time = _Time.y + _Test;
-				float4 vertex = i[0].vertex * bary.x + i[1].vertex * bary.y + i[2].vertex * bary.z;
+				float4 vertex = i[0].vertex * bary.x + mad(i[1].vertex,bary.y,i[2].vertex * bary.z);
 				float2 uv = i[0].uv * bary.x + i[1].uv * bary.y + i[2].uv * bary.z;
 				o.uv = uv;
 				float3 normal = normalize(i[0].normal * bary.x + i[1].normal * bary.y + i[2].normal * bary.z);
+				float3 tangent = normalize(i[0].tangent.xyz * bary.x + i[1].tangent.xyz * bary.y + i[2].tangent.xyz * bary.z);
 				o.wPos = mul(unity_ObjectToWorld, vertex);
 
 				int loop = _Loop;
 				if (loop > MAX_LOOP_COUNT) loop = MAX_LOOP_COUNT;
-				if (_ENABLE_VERTEX_NOISE)
+				[branch]
+				if (_ENABLE_VERTEX_NOISE && !_NormalByVector)
 				{
 					#ifdef _NOISESPACE_WORLD
 					float4 p4n = float4(mad(time,-_Flow.xyz,o.wPos),time);
 					p4n *= _Scale;
-					vertex.xyz += normal*_WHT*mad(2,map14(p4n,0,loop),-1+_Offset);
+					vertex.xyz += _WHT*mad(2,map14(p4n,0,loop),-1+_Offset)*normal;
 					#elif _NOISESPACE_OBJECT
 					float4 p4n = float4(mad(time,-_Flow.xyz,vertex.xyz),time);
 					p4n *= _Scale;
-					vertex.xyz += normal*_WHT*mad(2,map14(p4n,0,loop),-1+_Offset);
+					vertex.xyz += _WHT*mad(2,map14(p4n,0,loop),-1+_Offset)*normal;
 					#elif _NOISESPACE_UV
 					float3 p4n = float3(mad(time,-_Flow.xy,uv),time);
 					p4n *= _Scale.xyw;
-					vertex.xyz += normal*_WHT*mad(2,map13(p4n,0,loop),-1+_Offset);
+					vertex.xyz += _WHT*mad(2,map13(p4n,0,loop),-1+_Offset)*normal;
 					#elif _NOISESPACE_UVTORUS
 					float2 temp = frac(mad(time,-_Flow.xy,uv))*tau;
 					float5 p4n = float5c(_Scale.x*cos(temp.x)/tau,_Scale.x*sin(temp.x)/tau,_Scale.y*cos(temp.y)/tau,_Scale.y*sin(temp.y)/tau,time*_Scale.w);
-					vertex.xyz += normal*_WHT*mad(2,map15(p4n,0,loop),-1+_Offset);
+					vertex.xyz += _WHT*mad(2,map15(p4n,0,loop),-1+_Offset)*normal;
 					#endif
 				}
+				[branch]
 				if (_ENABLE_WAVE)
 				{
 					#ifdef _NOISESPACE_WORLD
-					vertex.xyz += normal*_WHT2*(pow(.5*sin(tau*dot(float4(o.wPos,-time),_ScaleT))+.5, _WavePower)*2-1+_Offset);
+					vertex.xyz += _WHT2*(pow(mad(.5,sin(tau*dot(float4(o.wPos,-time),_ScaleT)),.5), _WavePower)*2-1+_Offset)*normal;
 					#elif _NOISESPACE_OBJECT
-					vertex.xyz += normal*_WHT2*(pow(.5*sin(tau*dot(float4(vertex.xyz,-time),_ScaleT))+.5, _WavePower)*2-1+_Offset);
+					vertex.xyz += _WHT2*(pow(mad(.5,sin(tau*dot(float4(vertex.xyz,-time),_ScaleT)),.5), _WavePower)*2-1+_Offset)*normal;
 					#elif _NOISESPACE_UV
-					vertex.xyz += normal*_WHT2*(pow(.5*sin(tau*dot(float3(uv,-time),_ScaleT.xyw))+.5, _WavePower)*2-1+_Offset);
+					vertex.xyz += _WHT2*(pow(mad(.5,sin(tau*dot(float3(uv,-time),_ScaleT.xyw)),.5), _WavePower)*2-1+_Offset)*normal;
 					#elif _NOISESPACE_UVTORUS
-					vertex.xyz += normal*_WHT2*(pow(.5*sin(tau*dot(float3(uv,-time),float3(floor(_ScaleT.xy),_ScaleT.w)))+.5, _WavePower)*2-1+_Offset);
+					vertex.xyz += _WHT2*(pow(mad(.5,sin(tau*dot(float3(uv,-time),float3(floor(_ScaleT.xy),_ScaleT.w))),.5), _WavePower)*2-1+_Offset)*normal;
 					#endif
 				}
 				o.wPos = mul(unity_ObjectToWorld, vertex);
 
 				o.pos = UnityObjectToClipPos(vertex);
 				o.normal = UnityObjectToWorldNormal(normal);
+				o.tangent = mul(unity_ObjectToWorld, tangent.xyz); 
 				o.grabPos = ComputeGrabScreenPos(o.pos);
 				o.scrPos = ComputeScreenPos(o.pos);
 				return o;
@@ -696,103 +728,151 @@
 				fixed4 c = _Color;
 				float3 wpos = i.wPos;
 				float time = _Time.y + _Test;
-				float level = max(0,log2(length(ddx(i.wPos)+ddy(i.wPos))/_MUD));
+				float level = max(0,log2(length(fwidth(wpos))/_MUD));
 				float3 normal = normalize(i.normal);
-				float3 viewDir = normalize(i.wPos - _WorldSpaceCameraPos);
-				float3 cameraDir = cameraDir = unity_CameraToWorld._m02_m12_m22;
+				float3 tangent = normalize(cross(cross(normal, i.tangent),normal));
+				float3 binormal = normalize(cross(normal, tangent));
+				float3 viewDir = normalize(wpos - _WorldSpaceCameraPos);
+				float3 cameraDir = unity_CameraToWorld._m02_m12_m22;
+				float3 ddxwpos = ddx(wpos);
+				float3 ddywpos = ddy(wpos);
 
 				// Calculate normal
 
 				#ifdef _NOISESPACE_WORLD
-				float4 p4n = float4(mad(time,-_Flow.xyz,i.wPos),time);
+				float4 p4n = float4(mad(time,-_Flow.xyz,wpos),time);
 				p4n *= _Scale;
 				#elif _NOISESPACE_OBJECT
-				float4 p4n = float4(mul(unity_WorldToObject, float4(mad(time,-_Flow.xyz,i.wPos), 1)).xyz,time);
+				float4 p4n = float4(mul(unity_WorldToObject, float4(mad(time,-_Flow.xyz,wpos), 1)).xyz,time);
 				p4n *= _Scale;
 				#elif _NOISESPACE_UV
 				float3 p4n = float3(mad(time,-_Flow.xy,i.uv),time);
 				p4n *= _Scale.xyw;
 				#elif _NOISESPACE_UVTORUS
 				float2 temp = frac(mad(time,-_Flow.xy,i.uv))*tau;
-				float5 p4n = float5c(_Scale.x*cos(temp.x)/tau,_Scale.x*sin(temp.x)/tau,_Scale.y*cos(temp.y)/tau,_Scale.y*sin(temp.y)/tau,time*_Scale.w);
+				float2 scaletau = _Scale.xy/tau;
+				float5 p4n = float5c(scaletau.x*cos(temp.x),scaletau.x*sin(temp.x),scaletau.y*cos(temp.y),scaletau.y*sin(temp.y),time*_Scale.w);
 				#endif
 
 				float d = .001*log2(time);
 
-				float3 fnormal = normalize(cross(ddy(wpos),ddx(wpos)));
+				float3 fnormal = normalize(cross(ddywpos,ddxwpos));
+				float3 ftangent = normalize(cross(cross(fnormal,tangent),fnormal));
+				float3 fbinormal = normalize(cross(cross(fnormal,binormal),fnormal));
 
 				int loop = _Loop;
+				[branch]
 				if (loop > MAX_LOOP_COUNT) loop = MAX_LOOP_COUNT;
+
+				float3 wnormal;
+				float3 wh_fnormal = _WH*fnormal;
 				#ifdef _NOISESPACE_UVTORUS
-				float3 wavepos0 = _WH*map15(p4n,level,loop)*fnormal; //+wpos
-				float3 waveposx = _WH*map15(add(p4n,m(float5c(ddx(p4n.u),ddx(p4n.l)),float5c(d/length(ddx(wpos))))),level,loop)*fnormal+normalize(ddx(wpos))*d; //+wpos
-				float3 waveposy = _WH*map15(add(p4n,m(float5c(ddy(p4n.u),ddy(p4n.l)),float5c(d/length(ddy(wpos))))),level,loop)*fnormal+normalize(ddy(wpos))*d; //+wpos
+				[branch]
+				if (_NormalByVector)
+				{
+					//wnormal = normalize(fnormal+_WH*((2*map15(p4n,level,loop)-1)*ftangent+(2*map15(add(p4n,float5c(1)),level,loop)-1)*fbinormal));
+					wnormal = normalize(mad(_WH,mad(mad(2,map15(p4n,level,loop),-1),ftangent,mad(2,map15(add(p4n,float5c(1)),level,loop),-1)*fbinormal),fnormal));
+				}
+				else
+				{
+					/*
+					float3 wavepos0 = map15(p4n,level,loop)*wh_fnormal+wpos;
+					float3 waveposx = map15(add(p4n,m(ddx(p4n),float5c(d/length(ddx(wpos))))),level,loop)*wh_fnormal+normalize(ddx(wpos))*d+wpos;
+					float3 waveposy = map15(add(p4n,m(ddy(p4n),float5c(d/length(ddy(wpos))))),level,loop)*wh_fnormal+normalize(ddy(wpos))*d+wpos;
+					wnormal = normalize(cross(waveposy-wavepos0,waveposx-wavepos0));
+					*/
+					float3 wavepos0_ = map15(p4n,level,loop);
+					float rcplengthddxwposd = rsqrt(dot(ddxwpos,ddxwpos))*d;
+					float rcplengthddywposd = rsqrt(dot(ddywpos,ddywpos))*d;
+					float3 waveposx_0 = mad(map15(mad(ddx(p4n),float5c(rcplengthddxwposd),p4n),level,loop)-wavepos0_,wh_fnormal,rcplengthddxwposd*ddxwpos); //+wpos
+					float3 waveposy_0 = mad(map15(mad(ddy(p4n),float5c(rcplengthddywposd),p4n),level,loop)-wavepos0_,wh_fnormal,rcplengthddywposd*ddywpos); //+wpos
+					wnormal = normalize(cross(waveposy_0,waveposx_0));
+				}
 				#elif _NOISESPACE_UV
-				float3 wavepos0 = _WH*map13(p4n,level,loop)*fnormal; //+wpos
-				float3 waveposx = _WH*map13(p4n+ddx(p4n)*d/length(ddx(wpos)),level,loop)*fnormal+normalize(ddx(wpos))*d; //+wpos
-				float3 waveposy = _WH*map13(p4n+ddy(p4n)*d/length(ddy(wpos)),level,loop)*fnormal+normalize(ddy(wpos))*d; //+wpos
+				[branch]
+				if (_NormalByVector)
+				{
+					//wnormal = normalize(fnormal+_WH*((2*map13(p4n,level,loop)-1)*ftangent+(2*map13(p4n+1,level,loop)-1)*fbinormal));
+					wnormal = normalize(mad(_WH,mad(mad(2,map13(p4n,level,loop),-1),ftangent,mad(2,map13(p4n+1,level,loop),-1)*fbinormal),fnormal));
+				}
+				else
+				{
+					/*
+					float3 wavepos0 = map13(p4n,level,loop)*wh_fnormal+wpos;
+					float3 waveposx = map13(p4n+ddx(p4n)*d/length(ddx(wpos)),level,loop)*wh_fnormal+normalize(ddx(wpos))*d+wpos;
+					float3 waveposy = map13(p4n+ddy(p4n)*d/length(ddy(wpos)),level,loop)*wh_fnormal+normalize(ddy(wpos))*d+wpos;
+					wnormal = normalize(cross(waveposy-wavepos0,waveposx-wavepos0));
+					*/
+					float3 wavepos0_ = map13(p4n,level,loop);
+					float rcplengthddxwposd = rsqrt(dot(ddxwpos,ddxwpos))*d;
+					float rcplengthddywposd = rsqrt(dot(ddywpos,ddywpos))*d;
+					float3 waveposx_0 = mad(map13(mad(ddx(p4n),rcplengthddxwposd,p4n),level,loop)-wavepos0_,wh_fnormal,rcplengthddxwposd*ddxwpos);
+					float3 waveposy_0 = mad(map13(mad(ddy(p4n),rcplengthddywposd,p4n),level,loop)-wavepos0_,wh_fnormal,rcplengthddywposd*ddywpos); //+wpos
+					wnormal = normalize(cross(waveposy_0,waveposx_0));
+				}
 				#else
-				float3 wavepos0 = _WH*map14(p4n,level,loop)*fnormal; //+wpos
-				float3 waveposx = _WH*map14(p4n+ddx(p4n)*d/length(ddx(wpos)),level,loop)*fnormal+normalize(ddx(wpos))*d; //+wpos
-				float3 waveposy = _WH*map14(p4n+ddy(p4n)*d/length(ddy(wpos)),level,loop)*fnormal+normalize(ddy(wpos))*d; //+wpos
+				[branch]
+				if (_NormalByVector)
+				{
+					//wnormal = normalize(fnormal+_WH*((2*map14(p4n,level,loop)-1)*ftangent+(2*map14(p4n+1,level,loop)-1)*fbinormal));
+					wnormal = normalize(mad(_WH,mad(mad(2,map14(p4n,level,loop),-1),ftangent,mad(2,map14(p4n+1,level,loop),-1)*fbinormal),fnormal));
+				}
+				else
+				{
+					/*
+					float3 wavepos0 = map14(p4n,level,loop)*wh_fnormal+wpos;
+					float3 waveposx = map14(p4n+ddx(p4n)*d/length(ddx(wpos)),level,loop)*wh_fnormal+normalize(ddx(wpos))*d+wpos;
+					float3 waveposy = map14(p4n+ddy(p4n)*d/length(ddy(wpos)),level,loop)*wh_fnormal+normalize(ddy(wpos))*d+wpos;
+					wnormal = normalize(cross(waveposy-wavepos0,waveposx-wavepos0));
+					*/
+					float wavepos0_ = map14(p4n,level,loop);
+					float rcplengthddxwposd = rsqrt(dot(ddxwpos,ddxwpos))*d;
+					float rcplengthddywposd = rsqrt(dot(ddywpos,ddywpos))*d;
+					float3 waveposx_0 = mad(map14(mad(ddx(p4n),rcplengthddxwposd,p4n),level,loop)-wavepos0_,wh_fnormal,rcplengthddxwposd*ddxwpos);
+					float3 waveposy_0 = mad(map14(mad(ddy(p4n),rcplengthddywposd,p4n),level,loop)-wavepos0_,wh_fnormal,rcplengthddywposd*ddywpos);
+					wnormal = normalize(cross(waveposy_0,waveposx_0));
+				}
 				#endif
 
-				float3 wnormal = normalize(cross(waveposy-wavepos0,waveposx-wavepos0));
 				float3 fbnormal = face > 0 ? normal : -normal;
-				if (face < 0) wnormal *= -1;
-				if (abs(UNITY_MATRIX_P._m20)>.0001)
-				{
-					wnormal *= -1;
-					fnormal *= -1;
-				}
-				if (dot(fnormal,fbnormal)<.99999) wnormal = mul(rrf(normalize(cross(fnormal,fbnormal)),dot(fnormal,fbnormal)),wnormal);
+				wnormal = face > 0 ? wnormal : -wnormal;
+				wnormal = abs(UNITY_MATRIX_P._m20) > .0001 ? -wnormal : wnormal;
+				fnormal = abs(UNITY_MATRIX_P._m20) > .0001 ? -fnormal : fnormal;
+				float dot_fnormal_fbnormal = dot(fnormal, fbnormal);
+				wnormal = dot_fnormal_fbnormal < .99999 ? mul(rrf(normalize(cross(fnormal,fbnormal)),dot_fnormal_fbnormal),wnormal) : wnormal;
 
 				// Calculate UV for grabtexture and cameradepthtexture
 
+				float dot_cameradir_viewdir = dot(cameraDir, viewDir);
 				float4 depth4cd = UNITY_PROJ_COORD(i.scrPos);
-				float truedepth = LinearEyeDepthScreenUV(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, depth4cd),depth4cd.xy/depth4cd.w)/dot(cameraDir, viewDir);
-				if (truedepth < 0) truedepth = 1.#INF;
+				float truedepth = LinearEyeDepthScreenUV(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, depth4cd),depth4cd.xy/depth4cd.w)/dot_cameradir_viewdir;
+				truedepth = truedepth > 0 ? truedepth : 1.#INF;
 				float3 wnormalc = mul(unity_WorldToCamera, wnormal);
 				float4 grabUV = i.grabPos;
 				float2 aspect = _ScreenParams.xy / min(_ScreenParams.x, _ScreenParams.y);
-				grabUV.xy += _Distortion * wnormalc.xy / aspect;
-				depth4cd.xy += _Distortion * wnormalc.xy / aspect;
+				float2 distortion_wnormalc_aspect = _Distortion / aspect * wnormalc.xy;
+				grabUV.xy += distortion_wnormalc_aspect;
+				depth4cd.xy += distortion_wnormalc_aspect;
 
 				// Calculate transparency
 
-				float depth = LinearEyeDepthScreenUV(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, depth4cd),saturate(depth4cd.xy/depth4cd.w))/dot(cameraDir, viewDir);
-				if (depth < 0) depth = 1.#INF;
+				float depth = LinearEyeDepthScreenUV(SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, depth4cd),saturate(depth4cd.xy/depth4cd.w))/dot_cameradir_viewdir;
+				depth = depth > 0 ? depth : 1.#INF;
 				float surfDepth = distance(_WorldSpaceCameraPos, i.wPos);
 				float depthDiff = depth - surfDepth;
 				float truedepthDiff = truedepth - surfDepth;
+				[branch]
 				if (_IsVD)
 				{
 					depthDiff = min(_VD, depthDiff);
 					truedepthDiff = min(_VD, truedepthDiff);
 				}
-				float transparency = 1 - saturate(1 / exp2(_Opacity * (depthDiff > 0 ? depthDiff : truedepthDiff)));
+				float transparency = saturate(1-exp2(-_Opacity * (depthDiff > 0 ? depthDiff : truedepthDiff)));
 
 				// Lighting
 
-				float3 lightDir;
-				if (_Manual_directional_light_direction)
-				{
-					lightDir = normalize(_LD.xyz);
-				}
-				else
-				{
-					lightDir = normalize(_WorldSpaceLightPos0.xyz);
-				}
-
-				float3 lightColor;
-				if (_Manual_directional_light_color)
-				{
-					lightColor = _LC.rgb;
-				}
-				else
-				{
-					lightColor = _LightColor0.rgb;
-				}
+				float3 lightDir = _Manual_directional_light_direction ? normalize(_LD.xyz) : normalize(_WorldSpaceLightPos0.xyz);
+				float3 lightColor = _Manual_directional_light_color ? _LC.rgb : _LightColor0.rgb;
 				fixed4 reflectionProbeColor = UNITY_SAMPLE_TEXCUBE_LOD(unity_SpecCube0, face < 0 ? refract(viewDir, -wnormal, 1/_Refract) : reflect(viewDir, wnormal), 0);
 				lightColor = lerp(lightColor, reflectionProbeColor, _Blend_DLC_RP);
 
@@ -807,7 +887,7 @@
 				//return fixed4(frac(wpos.xz),0,1);
 				//return fixed4(map14(p4n,0,_LoopT).xxx,1);
 				//return fixed4(i.noise.xxx,1);
-				//return fixed4(fnormal*.5+.5,1);
+				//return fixed4(wnormal*.5+.5,1);
 				return c;
 			}
 			ENDCG
