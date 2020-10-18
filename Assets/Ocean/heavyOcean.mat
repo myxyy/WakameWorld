@@ -91,18 +91,19 @@ Material:
     - _MinDist: 5
     - _Mode: 3
     - _NoiseSpace: 0
+    - _NormalByVector: 0
     - _OcclusionStrength: 1
     - _Offset: 0
-    - _Opacity: 1.063
-    - _Pa1: 5
+    - _Opacity: 0.1
+    - _Pa1: 5.81
     - _Parallax: 0.02
     - _Ref: 0.5
     - _ReflectBack: 0.5
     - _ReflectFace: 0.5
     - _Refract: 1.33
     - _SmoothnessTextureChannel: 0
-    - _SpecInt: 4
-    - _SpecPower: 7.3
+    - _SpecInt: 2.38
+    - _SpecPower: 19.8
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _TessFactor: 1
@@ -110,7 +111,7 @@ Material:
     - _Transparency: 1.08
     - _UVSec: 0
     - _VD: 0.5
-    - _WH: 1
+    - _WH: 0.402
     - _WHT: 0.01
     - _WHT2: 0.01
     - _WavePower: 1
