@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: heavyOcean
   m_Shader: {fileID: 4800000, guid: 4e65a67bc52278c4b8d566532f2304ce, type: 3}
-  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON
+  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _ENABLE_PSEUDO_MIPMAP_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -73,7 +73,7 @@ Material:
     - _Distortion: 0.12
     - _DstBlend: 10
     - _ENABLE_DOMAIN_WARPING: 0
-    - _ENABLE_PSEUDO_MIPMAP: 0
+    - _ENABLE_PSEUDO_MIPMAP: 1
     - _ENABLE_VERTEX_NOISE: 0
     - _ENABLE_WAVE: 0
     - _FresnelInt: 0.405
