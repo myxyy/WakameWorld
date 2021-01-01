@@ -335,7 +335,8 @@
 			{
 				float3 i = floor(p);
 				float3 f = frac(p);
-				f *= f * mad(-2,f,3);
+				//f *= f * mad(-2,f,3);
+				f = mad(mad(6,f,-15),f,10)*f*f*f;
 				return lerp(
 					lerp(
 						lerp(h13(i+float3(0,0,0)),h13(i+float3(1,0,0)),f.x),
@@ -355,7 +356,8 @@
 			{
 				float4 i = floor(p);
 				float4 f = frac(p);
-				f *= f * mad(-2,f,3);
+				//f *= f * mad(-2,f,3);
+				f = mad(mad(6,f,-15),f,10)*f*f*f;
 				return lerp(
 					lerp(
 						lerp(
@@ -391,7 +393,8 @@
 			{
 				float5 i = floor(p);
 				float5 f = frac(p);
-				f = m(f,m(f,mad(float5c(-2),f,float5c(3))));
+				//f = m(f,m(f,mad(float5c(-2),f,float5c(3))));
+				f = m(m(m(mad(mad(float5c(6),f,float5c(-15)),f,float5c(10)),f),f),f);
 				return lerp(
 					lerp(
 						lerp(
