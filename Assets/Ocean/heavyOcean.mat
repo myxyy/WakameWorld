@@ -118,9 +118,9 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _AmbientColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0, g: 0.068825066, b: 0.14150941, a: 1}
+    - _Color: {r: 0, g: 0.3333335, b: 1, a: 1}
     - _Color2: {r: 0, g: 0.04876633, b: 0.13207549, a: 1}
-    - _ColorShallow: {r: 0, g: 0.104050055, b: 0.4056604, a: 1}
+    - _ColorShallow: {r: 0.48235297, g: 0.65490204, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Flow: {r: 0, g: 0, b: 0, a: 1}
     - _LC: {r: 1, g: 1, b: 1, a: 1}
