@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using VRC.SDKBase;
 using VRC.Udon;
+using TMPro;
 
 public class ShowNumber : UdonSharpBehaviour
 {
@@ -11,6 +12,7 @@ public class ShowNumber : UdonSharpBehaviour
     public string[] unnumberedParties;
     private System.DateTime baseDate;
     private int unnumberedMondays = 0;
+    [SerializeField] private TextMeshProUGUI numberText;
     void Start()
     {
         baseDate = System.DateTime.Parse(ninthParty);
@@ -22,6 +24,6 @@ public class ShowNumber : UdonSharpBehaviour
     private void Update()
     {
         int count = (int)(System.DateTime.Now.ToOADate() - baseDate.ToOADate())/7 + 10 - unnumberedMondays;
-        GetComponent<Text>().text = string.Format("{0:G}", count);
+        numberText.text = string.Format("第{0:G}回", count);
     }
 }
