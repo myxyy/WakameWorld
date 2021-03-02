@@ -54,7 +54,7 @@
 		[HideInInspector] _Test ("Test", Float) = 0
 	}
 	SubShader {
-		Tags { "Queue"="AlphaTest+500" "LightMode"="ForwardBase" "IgnoreProjector"="True" }
+		Tags { "Queue"="AlphaTest+300" "LightMode"="ForwardBase" "IgnoreProjector"="True" }
 		LOD 200
 		Cull [_Cull]
 		ZWrite [_ZWrite]
