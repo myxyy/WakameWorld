@@ -48,6 +48,10 @@
 		_WavePower ("Wave power", Range(1,10)) = 1
 		_ScaleT ("Wave vector, frequency, (x,y,z,time) for World/Object, (u,v,_,time) for UV/UVTorus", Vector) = (.1,.1,.1,1)
 		_Offset ("Offset", Range(-1,1)) = 0
+		[Header(NearShoreAdjusting)]
+		_NearShorePower("Near shore depthDiff power", Range(0,20)) = 5
+		[MaterialToggle] _EnableAttenuateReflection ("Enable attenuate reflection", Float) = 0
+		[MaterialToggle] _EnableAttenuateDistortion ("Enable attenuate distortion", Float) = 0
 		[Header(Other)]
 		[Enum(UnityEngine.Rendering.CullMode)] _Cull ("Cull", Float) = 0
 		[MaterialToggle] _ZWrite ("ZWrite", Float) = 0
@@ -124,6 +128,9 @@
 			float _ENABLE_VERTEX_NOISE;
 			float _WavePower;
 			float _NormalByVector;
+			float _NearShorePower;
+			float _EnableAttenuateReflection;
+			float _EnableAttenuateDistortion;
 
 			// Code snipetts thankfully offered by RamType-0
 			// For fetching CameraDepthTexture in the mirror
@@ -882,9 +889,19 @@
 				float3 specular = pow(max(0,dot(face < 0 ? refract(-lightDir, wnormal, _Refract) : reflect(-lightDir, wnormal),-viewDir)), _SpecPower);
 				float fresnel = pow(max(0,dot(lightDir,wnormal)),_FresnelPower);
 
+				float nearShore = pow(saturate(depthDiff*.1),_NearShorePower+1e-5);
+				//float nearShore = pow(1-exp(-depthDiff),_NearShorePower+1e-5);
 				fixed4 grabCol = tex2D(_GrabTex_myxy_Ocean, saturate((depthDiff > 0 ? grabUV.xy : i.grabPos.xy)/grabUV.w));
+				// 水中のオブジェクトについてはあまりうまくいってない
+				[branch]
+				if (_EnableAttenuateDistortion)
+				{
+					fixed4 trueGrabCol = tex2D(_GrabTex_myxy_Ocean, saturate(i.grabPos.xy/grabUV.w));
+					grabCol = lerp(trueGrabCol, grabCol, nearShore);
+				}
 				c.rgb = lerp(grabCol * (face < 0 ? _ReflectBack : 1), lerp(_ColorShallow,c.rgb,pow(transparency,_Pa1)), face < 0 ? 0 : transparency);
-				c.rgb += ((specular*_SpecInt+fresnel*_FresnelInt)*lightColor)*(face < 0 ? _ReflectBack:_ReflectFace);
+				c.rgb += ((specular*_SpecInt+fresnel*_FresnelInt)*lightColor)*(face < 0 ? _ReflectBack:_ReflectFace)*(_EnableAttenuateReflection?nearShore:1);
+				//c.rgb += (1-nearShore)*.5;
 
 				//return face>0?fixed4(1,0,0,1):fixed4(0,1,0,1);
 				//return fixed4(frac(wpos.xz),0,1);
