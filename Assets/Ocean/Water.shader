@@ -8,9 +8,11 @@
 		[Header(Wave and Noise)]
 		[KeywordEnum(World, Object, UV, UVTorus)] _NoiseSpace ("Noise space", Float) = 0
 		[MaterialToggle] _NormalByVector ("Normal by vector:ON/Normal by height:OFF", Float) = 0
-		_WH("Wave height", Range(0,2)) = 1
+		_WH("Wave height", Range(0,10)) = 1
 		_Distortion("Distortion", Range(0,1)) = 0.1
 		_Loop ("FBM loop count (max 8)", Int) = 5
+		_FBMAmpFactor ("FBM amplitude factor", Range(1,4)) = 2
+		_FBMSclFactor ("FBM scale factor", Range(1,4)) = 2
 		[MaterialToggle] _ENABLE_DOMAIN_WARPING ("Enable domain warping", Float) = 0
 		_DF ("Domain warping factor", Range(0,10)) = 1
 		[Header(Lighting)]
@@ -52,6 +54,7 @@
 		_NearShorePower("Near shore distance estimation power", Range(0,10)) = 5
 		[MaterialToggle] _EnableAttenuateReflection ("Enable attenuate reflection", Float) = 0
 		[MaterialToggle] _EnableAttenuateDistortion ("Enable attenuate distortion", Float) = 0
+		[MaterialToggle] _EnableCoastWhite ("Enable coast white", Float) = 0
 		[Header(Other)]
 		[Enum(UnityEngine.Rendering.CullMode)] _Cull ("Cull", Float) = 0
 		[MaterialToggle] _ZWrite ("ZWrite", Float) = 0
@@ -131,6 +134,9 @@
 			float _NearShorePower;
 			float _EnableAttenuateReflection;
 			float _EnableAttenuateDistortion;
+			float _EnableCoastWhite;
+			float _FBMAmpFactor;
+			float _FBMSclFactor;
 
 			// Code snipetts thankfully offered by RamType-0
 			// For fetching CameraDepthTexture in the mirror
@@ -467,9 +473,10 @@
 
 			// FBM noises
 
-			float fbm13(float3 p, int loop) {
+			float fbm13normal(float3 p, int loop) {
 				float f = 0;
 				float a = 1;
+				float a1 = 1;
 				float b = 0;
 				//float c = 4/5;
 				//float s = 3/5;
@@ -481,10 +488,35 @@
 				[loop]
 				for (int i = 0; i < loop; i++)
 				{
-					a *= 2.;
-					f += n13(a/2*p)/a;
 					p = mul(rxyz,p);
+					a *= 2;
+					a1 *= 2;
+					f += n13(a/2*p)/a1;
 					b += rcp(a);
+				}
+				return f/(b==0?1:b);
+			}
+
+			float fbm13(float3 p, int loop) {
+				float f = 0;
+				float a = 1;
+				float a1 = 1;
+				float b = 0;
+				//float c = 4/5;
+				//float s = 3/5;
+				//float3x3 rxy = float3x3(c, s, 0,-s, c, 0, 0, 0, 1);
+				//float3x3 rxz = float3x3(c, 0, s, 0, 1, 0,-s, 0, c);
+				//float3x3 rxyz = mul(mul(rxz,rxy),rxz);
+				float3x3 rxyz = float3x3(19./125,108./125,12./25,-108./125,44./125,-9./25,-12./25,-9./25,4./5);
+
+				[loop]
+				for (int i = 0; i < loop; i++)
+				{
+					p = mul(rxyz,p);
+					a *= _FBMSclFactor;
+					a1 *= _FBMAmpFactor;
+					f += n13(a/2*p)/a1;
+					b += rcp(a1);
 				}
 				return f/(b==0?1:b);
 			}
@@ -492,6 +524,7 @@
 			float fbm14(float4 p, int loop) {
 				float f = 0;
 				float a = 1;
+				float a1 = 1;
 				float b = 0;
 				//float c = 4/5;
 				//float s = 3/5;
@@ -504,10 +537,11 @@
 				[loop]
 				for (int i = 0; i < loop; i++)
 				{
-					a *= 2.;
-					f += n14(a/2*p)/a;
 					p = mul(rxyzw,p);
-					b += rcp(a);
+					a *= _FBMSclFactor;
+					a1 *= _FBMAmpFactor;
+					f += n14(a/2*p)/a1;
+					b += rcp(a1);
 				}
 				return f/(b==0?1:b);
 			}
@@ -515,15 +549,17 @@
 			float fbm15(float5 p, int loop) {
 				float f = 0;
 				float a = 1;
+				float a1 = 1;
 				float b = 0;
 				float5x5 rotate = float5x5c(-37616./78125,2268./3125,5697./15625,9288./78125,192./625,-9288./78125,1424./3125,-11304./15625,-35091./78125,-144./625,-5697./15625,-144./625,1424./3125,-11304./15625,-36./125,-2268./3125,-36./125,-144./625,1424./3125,-9./25,-192./625,-9./25,-36./125,-144./625,4./5);
 				[loop]
 				for (int i = 0; i < loop; i++)
 				{
-					a *= 2.;
-					f += n15(m(p,float5c(a/2)))/a;
 					p = mul(rotate,p);
-					b += rcp(a);
+					a *= _FBMSclFactor;
+					a1 *= _FBMAmpFactor;
+					f += n15(m(p,float5c(a/2)))/a1;
+					b += rcp(a1);
 				}
 				return f/(b==0?1:b);
 			}
@@ -894,7 +930,8 @@
 				fixed4 grabCol = tex2D(_GrabTex_myxy_Ocean, saturate((depthDiff > 0 ? grabUV.xy : i.grabPos.xy)/grabUV.w));
 
 				float truedepthDiffDiff = fwidth(truedepthDiff)/length(fwidth(i.wPos));
-				float cdet = pow(truedepthDiff,3)/(truedepthDiffDiff < .1 ? truedepthDiffDiff : 1e-5);
+				//float cdet = pow(truedepthDiff,3)/(truedepthDiffDiff < .1 ? truedepthDiffDiff : 1e-5);
+				float cdet = pow(truedepthDiff,3)/(truedepthDiffDiff < .01 ? truedepthDiffDiff : 1e-5);
 				cdet*=1e-5;
 				cdet = pow(cdet,_NearShorePower);
 
@@ -910,8 +947,11 @@
 				c.rgb += ((specular*_SpecInt+fresnel*_FresnelInt)*lightColor)*(face < 0 ? _ReflectBack:_ReflectFace)*(_EnableAttenuateReflection?saturate(cdet):1);
 				//c.rgb += exp(-cdet*1e-5)*(pow(fbm14(float4(i.wPos*10,time*.1),4),1.5)>.3?1:0)*saturate(1-abs(truedepthDiff*5-1));
 
-				//float4 p4c = float4(i.wPos*10,time*.1);
-				//c.rgb += exp(-cdet*1e-3)*(pow(fbm14(p4c+fbm14(p4c,3)*4,4),1.5)>.4?1:0)*.6*pow(truedepthDiffDiff,.1);
+				if (_EnableCoastWhite)
+				{
+					float3 p4c = float3(i.wPos.xz*10,time*.1);
+					c.rgb += exp(-cdet)*(pow(fbm13normal(p4c+fbm13normal(p4c,3)*4,4),1.5)>.4?1:0)*pow(saturate(1-abs(1-cdet*10)),.8)*length(lightColor)/1.7;
+				}
 
 				//return face>0?fixed4(1,0,0,1):fixed4(0,1,0,1);
 				//return fixed4(frac(wpos.xz),0,1);
