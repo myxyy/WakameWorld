@@ -49,7 +49,7 @@
 		_ScaleT ("Wave vector, frequency, (x,y,z,time) for World/Object, (u,v,_,time) for UV/UVTorus", Vector) = (.1,.1,.1,1)
 		_Offset ("Offset", Range(-1,1)) = 0
 		[Header(NearShoreAdjusting)]
-		_NearShorePower("Near shore depthDiff power", Range(0,20)) = 5
+		_NearShorePower("Near shore distance estimation power", Range(0,10)) = 5
 		[MaterialToggle] _EnableAttenuateReflection ("Enable attenuate reflection", Float) = 0
 		[MaterialToggle] _EnableAttenuateDistortion ("Enable attenuate distortion", Float) = 0
 		[Header(Other)]
@@ -892,16 +892,26 @@
 				float nearShore = pow(saturate(depthDiff*.1),_NearShorePower+1e-5);
 				//float nearShore = pow(1-exp(-depthDiff),_NearShorePower+1e-5);
 				fixed4 grabCol = tex2D(_GrabTex_myxy_Ocean, saturate((depthDiff > 0 ? grabUV.xy : i.grabPos.xy)/grabUV.w));
-				// 水中のオブジェクトについてはあまりうまくいってない
+
+				float truedepthDiffDiff = fwidth(truedepthDiff)/length(fwidth(i.wPos));
+				float cdet = pow(truedepthDiff,3)/(truedepthDiffDiff < .1 ? truedepthDiffDiff : 1e-5);
+				cdet*=1e-5;
+				cdet = pow(cdet,_NearShorePower);
+
 				[branch]
 				if (_EnableAttenuateDistortion)
 				{
 					fixed4 trueGrabCol = tex2D(_GrabTex_myxy_Ocean, saturate(i.grabPos.xy/grabUV.w));
-					grabCol = lerp(trueGrabCol, grabCol, nearShore);
+					grabCol = lerp(trueGrabCol, grabCol, saturate(cdet));
 				}
 				c.rgb = lerp(grabCol * (face < 0 ? _ReflectBack : 1), lerp(_ColorShallow,c.rgb,pow(transparency,_Pa1)), face < 0 ? 0 : transparency);
-				c.rgb += ((specular*_SpecInt+fresnel*_FresnelInt)*lightColor)*(face < 0 ? _ReflectBack:_ReflectFace)*(_EnableAttenuateReflection?nearShore:1);
-				//c.rgb += (1-nearShore)*.5;
+
+				//float cde = truedepthDiff/length(ddx(truedepthDiff)/ddx(i.wPos));
+				c.rgb += ((specular*_SpecInt+fresnel*_FresnelInt)*lightColor)*(face < 0 ? _ReflectBack:_ReflectFace)*(_EnableAttenuateReflection?saturate(cdet):1);
+				//c.rgb += exp(-cdet*1e-5)*(pow(fbm14(float4(i.wPos*10,time*.1),4),1.5)>.3?1:0)*saturate(1-abs(truedepthDiff*5-1));
+
+				//float4 p4c = float4(i.wPos*10,time*.1);
+				//c.rgb += exp(-cdet*1e-3)*(pow(fbm14(p4c+fbm14(p4c,3)*4,4),1.5)>.4?1:0)*.6*pow(truedepthDiffDiff,.1);
 
 				//return face>0?fixed4(1,0,0,1):fixed4(0,1,0,1);
 				//return fixed4(frac(wpos.xz),0,1);
