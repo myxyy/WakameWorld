@@ -94,13 +94,13 @@ Material:
     - _Manual_directional_light_direction: 0
     - _MaxDist: 20
     - _Metallic: 1
-    - _MinDist: 5
+    - _MinDist: 0
     - _Mode: 3
     - _NearShorePower: 0.98
     - _NoiseSpace: 0
     - _NormalByVector: 0
     - _OcclusionStrength: 1
-    - _Offset: 0
+    - _Offset: 1
     - _Opacity: 0.1
     - _Pa1: 5.81
     - _Parallax: 0.02
@@ -113,7 +113,7 @@ Material:
     - _SpecPower: 8.3
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _TessFactor: 100
+    - _TessFactor: 3000
     - _Test: 0.05
     - _Transparency: 1.08
     - _UVSec: 0
@@ -133,5 +133,5 @@ Material:
     - _LC: {r: 1, g: 1, b: 1, a: 1}
     - _LD: {r: 0, g: 1, b: 0, a: 0}
     - _Scale: {r: 1, g: 1, b: 1, a: 0.5}
-    - _ScaleT: {r: 0.1, g: 0.1, b: 0.1, a: 0.1}
+    - _ScaleT: {r: 0.1, g: 0, b: 0.1, a: 0.1}
     - _SunColor: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
