@@ -10,7 +10,7 @@ Material:
   m_Name: heavyOcean
   m_Shader: {fileID: 4800000, guid: 4e65a67bc52278c4b8d566532f2304ce, type: 3}
   m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _ENABLEATTENUATEDISTORTION_ON _ENABLEATTENUATEREFLECTION_ON
-    _ENABLECOASTWHITE_ON _ENABLE_PSEUDO_MIPMAP_ON _ENABLE_WAVE_ON
+    _ENABLE_PSEUDO_MIPMAP_ON _ENABLE_WAVE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -79,7 +79,7 @@ Material:
     - _ENABLE_WAVE: 1
     - _EnableAttenuateDistortion: 1
     - _EnableAttenuateReflection: 1
-    - _EnableCoastWhite: 1
+    - _EnableCoastWhite: 0
     - _FBMAmpFactor: 3
     - _FBMSclFactor: 2.38
     - _FresnelInt: 0.405
