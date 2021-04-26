@@ -14,6 +14,8 @@ public class ResetFarObjectToDefaultPosition : UdonSharpBehaviour
     private float heightOfDownwardRayOriginFromPosition;
     [SerializeField]
     private float lengthOfDownwardRay;
+    [SerializeField]
+    private float maxRange;
     void Start()
     {
         if (Networking.LocalPlayer.isMaster)
@@ -36,7 +38,8 @@ public class ResetFarObjectToDefaultPosition : UdonSharpBehaviour
                     new Vector3(0,-1.0f,0),
                     lengthOfDownwardRay,
                     ~0
-                )
+                ) ||
+                (this.transform.position - defaultPosition).magnitude > maxRange
             )
             {
                 SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, "ResetToDefaultPosition");
