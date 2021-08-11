@@ -56,8 +56,8 @@
             v2f vert (appdata v)
             {
                 v2f o;
-                o.vertex = float4(1-2*v.uv.x,2*v.uv.y-1,0,1);
-                float3 localViewDir = mul(unity_CameraInvProjection, float4(o.vertex.x, -o.vertex.y, 0, 1)).xyz;
+                o.vertex = float4(1-2*v.uv.x,_ProjectionParams.x*(1-2*v.uv.y),0,1);
+                float3 localViewDir = mul(unity_CameraInvProjection, float4(o.vertex.x, _ProjectionParams.x*o.vertex.y, 0, 1)).xyz;
                 o.viewDir = mul(transpose(UNITY_MATRIX_V), localViewDir);
 
 				o.grabPos = ComputeGrabScreenPos(o.vertex);
