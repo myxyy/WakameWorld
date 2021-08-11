@@ -802,7 +802,7 @@
 
 				float d = .001*log2(time);
 
-				float3 fnormal = normalize(cross(ddywpos,ddxwpos));
+				float3 fnormal = -normalize(cross(ddywpos,ddxwpos))*_ProjectionParams.x;
 				float3 ftangent = normalize(cross(cross(fnormal,tangent),fnormal));
 				float3 fbinormal = normalize(cross(cross(fnormal,binormal),fnormal));
 
