@@ -10,11 +10,12 @@ public class EnvironmentManager : MonoBehaviour
     [Serializable]
     public class EnvironmentParameter
     {
+        [SerializeField] public string label;
         [SerializeField] public Color SkyColor;
     }
 
-    [SerializeField] private EnvironmentParameter[] parameters;
-    [SerializeField] private int index;
+    [SerializeField] public EnvironmentParameter[] parameters;
+    [HideInInspector] public int index = -1;
     public void Refresh()
     {
         skyMaterial.SetColor("_Color2", parameters[index].SkyColor);

@@ -44944,8 +44944,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skyMaterial: {fileID: 2100000, guid: 9bb3f29ecbdb0b34c88648ec3ff3b212, type: 2}
   parameters:
-  - SkyColor: {r: 0.40392157, g: 0.6431373, b: 1, a: 1}
-  - SkyColor: {r: 0, g: 0.021770691, b: 0.13207549, a: 1}
+  - label: Noon
+    SkyColor: {r: 0.40392157, g: 0.6431373, b: 1, a: 1}
+  - label: Night
+    SkyColor: {r: 0, g: 0.021770691, b: 0.13207549, a: 1}
   index: 0
 --- !u!4 &652408665
 Transform:
