@@ -12,19 +12,19 @@ public class EnvironmentManagerEditor : Editor
 
         EditorGUI.BeginChangeCheck();
 
-        var environmentList = environmentManager.parameters.Select(parameter => parameter.label).ToList();
+        var environmentList = environmentManager.Parameters.Select(parameter => parameter.Label).ToList();
         environmentList.Add(string.Empty);
         environmentList.Add("(Unselected)");
         var label = new GUIContent("Environments", "Select one item.");
-        var selectedIndex = environmentManager.index < 0 ? environmentManager.parameters.Length + 1 : environmentManager.index;
-        var index = environmentManager.parameters.Length > 0 ? EditorGUILayout.Popup(label, selectedIndex, environmentList.ToArray()) : selectedIndex;
+        var selectedIndex = environmentManager.Index < 0 ? environmentManager.Parameters.Length + 1 : environmentManager.Index;
+        var index = environmentManager.Parameters.Length > 0 ? EditorGUILayout.Popup(label, selectedIndex, environmentList.ToArray()) : selectedIndex;
 
         if (EditorGUI.EndChangeCheck())
         {
             var objectToUndo = environmentManager;
             Undo.RecordObject(environmentManager, "EnvironmentManager");
-            var previousIndex = environmentManager.index;
-            environmentManager.index = index;
+            var previousIndex = environmentManager.Index;
+            environmentManager.Index = index;
             if (previousIndex != index)
             {
                 environmentManager.Refresh();
