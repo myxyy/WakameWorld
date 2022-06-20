@@ -43227,7 +43227,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.737, y: -0.58}
+  m_AnchoredPosition: {x: 0.861, y: -0.62}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &548075804
@@ -77189,7 +77189,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.614, y: -0.359}
+  m_AnchoredPosition: {x: 1.614, y: 0.42}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1190704572
@@ -102420,7 +102420,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.731, y: -0.243}
+  m_AnchoredPosition: {x: 0.8549996, y: -0.28500023}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1799527807
@@ -102455,7 +102455,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Discord\u30B5\u30FC\u30D0\u30FC\n\u300C\u308F\u304B\u3081\u30D5\u30EC\u30F3\u30BA\u300D"
+  m_Text: "Discord\u30B5\u30FC\u30D0\u30FC\n\u300C\u308F\u304B\u3081\u30D5\u30EC\u30F3\u30BA\u300D\nhttps://discord.gg/wuNYXFNpfY"
 --- !u!222 &1799527808
 CanvasRenderer:
   m_ObjectHideFlags: 0
