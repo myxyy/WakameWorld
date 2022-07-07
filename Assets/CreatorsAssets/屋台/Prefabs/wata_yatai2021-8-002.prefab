@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &6650190356784529496
 Transform:
@@ -129,7 +129,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &2961809728546330295
 Transform:
@@ -350,6 +350,7 @@ MonoBehaviour:
   SynchronizePosition: 0
   AllowCollisionOwnershipTransfer: 1
   Reliable: 0
+  _syncMethod: 0
   serializedProgramAsset: {fileID: 11400000, guid: ff0b9b86366ddb6458535a931c218696,
     type: 2}
   programSource: {fileID: 11400000, guid: 71bdb90250d40d442a1e216ec510333b, type: 2}
