@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c333ccfdd0cbdbc4ca30cef2dd6e6b9b, type: 3}
   m_Name: PickupUseToStartParticle
   m_EditorClassIdentifier: 
-  serializedUdonProgramAsset: {fileID: 11400000, guid: cb02b4bf10144d04d9f859cc5c43d144,
+  serializedUdonProgramAsset: {fileID: 11400000, guid: ad9a63aa7904de740b2659f17c8df3d9,
     type: 2}
   udonAssembly: 
   assemblyError: 
