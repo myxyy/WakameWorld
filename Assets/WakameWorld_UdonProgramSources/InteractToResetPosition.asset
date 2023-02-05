@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c333ccfdd0cbdbc4ca30cef2dd6e6b9b, type: 3}
   m_Name: InteractToResetPosition
   m_EditorClassIdentifier: 
-  serializedUdonProgramAsset: {fileID: 11400000, guid: 16e470223a538e247a321a7b1a05aaa5,
+  serializedUdonProgramAsset: {fileID: 11400000, guid: f7485b8d78c1d2141b5d3dc1599596c3,
     type: 2}
   udonAssembly: 
   assemblyError: 
