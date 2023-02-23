@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c333ccfdd0cbdbc4ca30cef2dd6e6b9b, type: 3}
   m_Name: PlayAudioSourceOnEnterTrigger
   m_EditorClassIdentifier: 
-  serializedUdonProgramAsset: {fileID: 11400000, guid: fb29f5e9005b47f4d80dd9e4715d6c6d,
+  serializedUdonProgramAsset: {fileID: 11400000, guid: db1db0ddf232a5140b0b147b109c23df,
     type: 2}
   udonAssembly: 
   assemblyError: 

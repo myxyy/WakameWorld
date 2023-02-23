@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c333ccfdd0cbdbc4ca30cef2dd6e6b9b, type: 3}
   m_Name: PickupUseToIncrementRoundrobinAnimationInt
   m_EditorClassIdentifier: 
-  serializedUdonProgramAsset: {fileID: 11400000, guid: ee48c808ba5e4624694b46d6e83e2412,
+  serializedUdonProgramAsset: {fileID: 11400000, guid: 7f7b7d6b240472a4bafc77756507677c,
     type: 2}
   udonAssembly: 
   assemblyError: 
