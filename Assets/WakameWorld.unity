@@ -38127,7 +38127,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 71e6469130cb25849977690879a276c8, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 71e6469130cb25849977690879a276c8, type: 3}
       propertyPath: m_LocalScale.x
@@ -55952,7 +55952,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!199 &793799993
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -68840,7 +68840,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: b820ff6eee9c7a3459b21dec2349dbec,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b820ff6eee9c7a3459b21dec2349dbec,
         type: 3}
@@ -76824,7 +76824,7 @@ Transform:
   - {fileID: 1718437751}
   - {fileID: 707011698}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1142916658
 GameObject:
@@ -79858,7 +79858,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1286131813
 PrefabInstance:
@@ -108170,7 +108170,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: fe92c1e49caa9d5438d8df46174d9320,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fe92c1e49caa9d5438d8df46174d9320,
         type: 3}
