@@ -14,7 +14,7 @@ public class SpawnManager : UdonSharpBehaviour
     public override void OnPlayerJoined(VRCPlayerApi player)
     {
         base.OnPlayerJoined(player);
-        var seed = (int)DateTime.Now.AddHours(-12f).ToOADate();
+        var seed = (int)DateTime.Now.AddHours(-6f).ToOADate();
         UnityEngine.Random.InitState(seed);
         var spawnPoint = _spawnPointList[UnityEngine.Random.Range(0, _spawnPointList.Length)];
         player.TeleportTo(spawnPoint.position, spawnPoint.rotation);
