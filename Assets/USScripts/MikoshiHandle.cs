@@ -19,18 +19,21 @@ public class MikoshiHandle : UdonSharpBehaviour
         for (int i=0; i<_handleDefaultTransformList.Length; i++)
         {
             if (
-                Networking.IsOwner(Networking.LocalPlayer, _handleList[i].gameObject) &&
-                !_handleList[i].IsHeld
+                _handleList[i].IsHeld &&
+                Networking.IsOwner(Networking.LocalPlayer, this.gameObject)
             )
-            {
-                _handleList[i].transform.position = _handleDefaultTransformList[i].position;
-                _handleList[i].transform.rotation = _handleDefaultTransformList[i].rotation;
-            }
-            if (_handleList[i].IsHeld)
             {
                 var force = _handleList[i].transform.position - _handleDefaultTransformList[i].position;
                 force *= _forceFactor;
                 _rigidBody.AddForceAtPosition(force, _handleDefaultTransformList[i].position, ForceMode.Acceleration);
+            }
+            if (
+                !_handleList[i].IsHeld &&
+                Networking.IsOwner(Networking.LocalPlayer, _handleList[i].gameObject)
+            )
+            {
+                _handleList[i].transform.position = _handleDefaultTransformList[i].position;
+                _handleList[i].transform.rotation = _handleDefaultTransformList[i].rotation;
             }
         }
     }
