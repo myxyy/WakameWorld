@@ -1,40 +1,43 @@
 ﻿
 using UdonSharp;
 using UnityEngine;
+using VRC.SDK3.Components;
 using VRC.SDKBase;
 using VRC.Udon;
 
+[UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
 public class MikoshiHandle : UdonSharpBehaviour
 {
     [SerializeField]
-    private Rigidbody _rigidBody;
-    [SerializeField]
-    private Transform[] _handleDefaultTransformList;
-    [SerializeField]
-    private VRC.SDK3.Components.VRCPickup[] _handleList;
-    [SerializeField]
-    private float _forceFactor = 100f;
+    private VRCPickup _pickup;
+    [UdonSynced(UdonSyncMode.None)]
+    private bool _isHeld;
+    public bool IsHeld => _isHeld;
+    [UdonSynced(UdonSyncMode.None)]
+    private Vector3 _positionSynced;
+    public Vector3 PositionSynced => _positionSynced;
+
     private void Update()
     {
-        for (int i=0; i<_handleDefaultTransformList.Length; i++)
+        //var color = new Color(_isHeld?1f:0f, _pickup.IsHeld?1f:0f, 0f, 1f);
+        //_pickup.GetComponent<MeshRenderer>().material.SetColor("_Color", color);
+        if (_pickup.IsHeld)
         {
-            if (
-                _handleList[i].IsHeld &&
-                Networking.IsOwner(Networking.LocalPlayer, this.gameObject)
-            )
-            {
-                var force = _handleList[i].transform.position - _handleDefaultTransformList[i].position;
-                force *= _forceFactor;
-                _rigidBody.AddForceAtPosition(force, _handleDefaultTransformList[i].position, ForceMode.Acceleration);
-            }
-            if (
-                !_handleList[i].IsHeld &&
-                Networking.IsOwner(Networking.LocalPlayer, _handleList[i].gameObject)
-            )
-            {
-                _handleList[i].transform.position = _handleDefaultTransformList[i].position;
-                _handleList[i].transform.rotation = _handleDefaultTransformList[i].rotation;
-            }
+            Networking.SetOwner(Networking.LocalPlayer, this.gameObject);
         }
+
+        if (Networking.IsOwner(this.gameObject))
+        {
+            _isHeld = _pickup.IsHeld;
+            _positionSynced = _pickup.transform.position;
+            RequestSerialization();
+        }
+
+        if (!_isHeld)
+        {
+            _pickup.transform.position = this.transform.position;
+            _pickup.transform.rotation = this.transform.rotation;
+        }
+
     }
 }
