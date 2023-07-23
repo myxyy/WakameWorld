@@ -82796,6 +82796,7 @@ MonoBehaviour:
   - {fileID: 764545658}
   - {fileID: 604675885}
   _forceFactor: 10
+  _transformSyncFactor: 0.1
 --- !u!114 &1370802985
 MonoBehaviour:
   m_ObjectHideFlags: 2
