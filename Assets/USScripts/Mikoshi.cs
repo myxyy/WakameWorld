@@ -30,8 +30,10 @@ public class Mikoshi : UdonSharpBehaviour
             var handle = _handleList[i];
             if (handle.IsHeld)
             {
-                var force = (handle.PositionSynced - handle.transform.position).normalized;
-                force *= _forceFactor;
+                var forceVector = handle.PositionSynced - handle.transform.position;
+                var forceDir = forceVector.normalized;
+                var forceSqrMagnitude = forceVector.sqrMagnitude;
+                var force = (forceSqrMagnitude < 1f ? forceDir : forceVector) * _forceFactor;
                 _rigidBody.AddForceAtPosition(force, handle.transform.position, ForceMode.Acceleration);
             }
         }
