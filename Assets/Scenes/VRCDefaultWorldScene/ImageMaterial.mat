@@ -7,18 +7,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: heavyOcean
-  m_Shader: {fileID: 4800000, guid: 4e65a67bc52278c4b8d566532f2304ce, type: 3}
+  m_Name: ImageMaterial
+  m_Shader: {fileID: 10750, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - _NOISESPACE_WORLD
+  m_ValidKeywords: []
   m_InvalidKeywords:
   - _ALPHAPREMULTIPLY_ON
-  - _ENABLEATTENUATEDISTORTION_ON
-  - _ENABLEATTENUATEREFLECTION_ON
-  - _ENABLE_PSEUDO_MIPMAP_ON
-  - _ENABLE_WAVE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -49,10 +44,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _GrabTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -69,80 +60,25 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Test:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Blend_DLC_RP: 0.521
     - _BumpScale: 1
-    - _Cull: 0
     - _Cutoff: 0.5
-    - _DF: 1
     - _DetailNormalMapScale: 1
-    - _Distortion: 0.12
     - _DstBlend: 10
-    - _ENABLE_DOMAIN_WARPING: 0
-    - _ENABLE_PSEUDO_MIPMAP: 1
-    - _ENABLE_VERTEX_NOISE: 0
-    - _ENABLE_WAVE: 1
-    - _EnableAttenuateDistortion: 1
-    - _EnableAttenuateReflection: 1
-    - _EnableCoastWhite: 0
-    - _FBMAmpFactor: 3
-    - _FBMSclFactor: 2.38
-    - _FresnelInt: 0.405
-    - _FresnelPower: 5
     - _GlossMapScale: 1
-    - _Glossiness: 1
+    - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _IsVD: 0
-    - _Loop: 4
-    - _MUD: 0.1
-    - _Manual_directional_light_color: 0
-    - _Manual_directional_light_direction: 0
-    - _MaxDist: 20
-    - _Metallic: 1
-    - _MinDist: 0
+    - _Metallic: 0
     - _Mode: 3
-    - _NearShorePower: 0.98
-    - _NoiseSpace: 0
-    - _NormalByVector: 0
     - _OcclusionStrength: 1
-    - _Offset: 1
-    - _Opacity: 0.1
-    - _Pa1: 5.81
     - _Parallax: 0.02
-    - _Ref: 0.5
-    - _ReflectBack: 0.5
-    - _ReflectFace: 0.5
-    - _Refract: 1
     - _SmoothnessTextureChannel: 0
-    - _SpecInt: 2.46
-    - _SpecPower: 8.3
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _TessFactor: 3000
-    - _Test: 0.05
-    - _Transparency: 1.08
     - _UVSec: 0
-    - _VD: 0.5
-    - _WH: 2
-    - _WHT: 0
-    - _WHT2: 0.1
-    - _WavePower: 2
     - _ZWrite: 0
     m_Colors:
-    - _AmbientColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0, g: 0.015382292, b: 0.39607844, a: 0}
-    - _Color2: {r: 0, g: 0.04876633, b: 0.13207549, a: 1}
-    - _ColorShallow: {r: 0, g: 0.07483127, b: 0.4433962, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Flow: {r: 0.1, g: 0, b: 0.1, a: 1}
-    - _LC: {r: 1, g: 1, b: 1, a: 1}
-    - _LD: {r: 0, g: 1, b: 0, a: 0}
-    - _Scale: {r: 1, g: 1, b: 1, a: 0.5}
-    - _ScaleT: {r: 0.1, g: 0, b: 0.1, a: 0.1}
-    - _SunColor: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
   m_BuildTextureStacks: []
