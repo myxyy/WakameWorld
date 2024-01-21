@@ -20,7 +20,7 @@ public class SpawnManager : UdonSharpBehaviour
         }
     }
 
-    public override void OnPlayerTriggerEnter(VRCPlayerApi player)
+    public override void OnPlayerTriggerStay(VRCPlayerApi player)
     {
         base.OnPlayerCollisionEnter(player);
         if (player == Networking.LocalPlayer)
