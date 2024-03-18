@@ -102,7 +102,7 @@ Material:
     - _MUD: 0.1
     - _Manual_directional_light_color: 0
     - _Manual_directional_light_direction: 0
-    - _MaxDist: 20
+    - _MaxDist: 5
     - _Metallic: 1
     - _MinDist: 0
     - _Mode: 3
@@ -123,7 +123,7 @@ Material:
     - _SpecPower: 8.3
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _TessFactor: 3000
+    - _TessFactor: 300
     - _Test: 0.05
     - _Transparency: 1.08
     - _UVSec: 0
