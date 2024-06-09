@@ -102,9 +102,9 @@ Material:
     - _MUD: 0.1
     - _Manual_directional_light_color: 0
     - _Manual_directional_light_direction: 0
-    - _MaxDist: 5
+    - _MaxDist: 100
     - _Metallic: 1
-    - _MinDist: 0
+    - _MinDist: 20
     - _Mode: 3
     - _NearShorePower: 0.98
     - _NoiseSpace: 0
