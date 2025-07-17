@@ -4,10 +4,10 @@
       "version": "0.1.15"
     },
     "com.vrchat.worlds": {
-      "version": "3.8.0"
+      "version": "3.8.2"
     },
     "net.ureishi.qvpen": {
-      "version": "3.3.6"
+      "version": "3.3.8"
     }
   },
   "locked": {
@@ -16,17 +16,17 @@
       "dependencies": {}
     },
     "com.vrchat.worlds": {
-      "version": "3.8.0",
+      "version": "3.8.2",
       "dependencies": {
-        "com.vrchat.base": "3.8.0"
+        "com.vrchat.base": "3.8.2"
       }
     },
     "com.vrchat.base": {
-      "version": "3.8.0",
+      "version": "3.8.2",
       "dependencies": {}
     },
     "net.ureishi.qvpen": {
-      "version": "3.3.6",
+      "version": "3.3.8",
       "dependencies": {
         "com.vrchat.worlds": "^3.5.0"
       }
